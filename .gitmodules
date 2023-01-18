@@ -1,0 +1,3 @@
+[submodule "indykite-sdk-python"]
+	path = indykite-sdk-python
+	url = https://github.com/indykite/indykite-sdk-python.git
