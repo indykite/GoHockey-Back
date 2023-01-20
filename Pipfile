@@ -10,6 +10,13 @@ swagger-ui-bundle = ">=0.0.2"
 python-dateutil = ">=2.6.0"
 
 [dev-packages]
+pytest = "~=4.6.7"
+pytest-cov = ">=2.8.1"
+pytest-randomly = "==1.2.3"
+flask-testing = "==0.8.0"
 
 [requires]
 python_version = "3.11"
+
+[scripts]
+server = "python3 -m openapi_server"

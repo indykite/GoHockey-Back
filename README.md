@@ -14,8 +14,9 @@ Python 3.5.2+
 To run the server, please execute the following from the root directory:
 
 ```
-pip3 install -r requirements.txt
-python3 -m openapi_server
+pip3 install --user pipenv
+# OR pipx install pipenv
+pipenv install
 ```
 
 and open your browser to here:

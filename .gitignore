@@ -67,3 +67,6 @@ target/
 /app_agent_credential.json
 /GoHockey_client_secret_google.json
 /backendSA.json
+
+#IDE
+.idea/
