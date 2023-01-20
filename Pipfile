@@ -4,6 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+connexion = {version = "<=2.3.0", extras = ["swagger-ui"]}
+werkzeug = "==0.16.1"
+swagger-ui-bundle = ">=0.0.2"
+python-dateutil = ">=2.6.0"
 
 [dev-packages]
 
