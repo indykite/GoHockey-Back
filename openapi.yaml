@@ -35,7 +35,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the home address of the logged in user
-      x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.default_controller
       x-accepts: application/json
     post:
       operationId: user_address_post
@@ -50,7 +50,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Add a home address to the logged in user
-      x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.default_controller
       x-contentType: application/json
       x-accepts: application/json
   /user/child:
@@ -67,17 +67,17 @@ paths:
       security:
       - bearerAuth: []
       summary: Add a child to the logged in user
-      x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.default_controller
       x-contentType: application/json
       x-accepts: application/json
-  /user/child/{childId}:
+  /user/child/{child_id}:
     get:
       operationId: user_child_child_id_get
       parameters:
       - description: Id of the child to get
         explode: false
         in: path
-        name: childId
+        name: child_id
         required: true
         schema:
           type: string
@@ -92,7 +92,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the child by id
-      x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.default_controller
       x-accepts: application/json
   /user/email:
     get:
@@ -109,7 +109,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the email of the logged in user
-      x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.default_controller
       x-accepts: application/json
   /user/subscription:
     get:
@@ -124,7 +124,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the subscription of the logged in user
-      x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.default_controller
       x-accepts: application/json
     post:
       operationId: user_subscription_post
@@ -139,7 +139,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Add a subscription to the logged in user
-      x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.default_controller
       x-contentType: application/json
       x-accepts: application/json
 components:
@@ -277,4 +277,4 @@ components:
       bearerFormat: JWT
       scheme: bearer
       type: http
-      x-bearerInfoFunc: go_gretzky.controllers.authorization_controller.check_bearerAuth
+      x-bearerInfoFunc: openapi_server.controllers.authorization_controller.check_bearerAuth
