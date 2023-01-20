@@ -17,7 +17,7 @@ def root_get():  # noqa: E501
 
     :rtype: str
     """
-    return 'do some magic!'
+    return 'Welcome to the GoGretzky API'
 
 
 def user_address_get():  # noqa: E501
