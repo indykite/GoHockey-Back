@@ -22,6 +22,7 @@ paths:
                 x-content-type: application/json
           description: Welcome to the GoGretzky API
       summary: Welcome to the GoGretzky API
+      x-accepts: application/json
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /user/address:
     get:
@@ -35,6 +36,7 @@ paths:
           description: Home address of the logged in user
       summary: Get the home address of the logged in user
       x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-accepts: application/json
     post:
       operationId: user_address_post
       requestBody:
@@ -47,6 +49,8 @@ paths:
           description: Successfully added home address to the logged in user
       summary: Add a home address to the logged in user
       x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-contentType: application/json
+      x-accepts: application/json
   /user/child:
     post:
       operationId: user_child_post
@@ -60,6 +64,8 @@ paths:
           description: Successfully added child to the logged in user
       summary: Add a child to the logged in user
       x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-contentType: application/json
+      x-accepts: application/json
   /user/child/{childId}:
     get:
       operationId: user_child_child_id_get
@@ -81,6 +87,7 @@ paths:
           description: Child information
       summary: Get the child by id
       x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-accepts: application/json
   /user/email:
     get:
       operationId: user_email_get
@@ -95,6 +102,7 @@ paths:
           description: Email of the logged in user
       summary: Get the email of the logged in user
       x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-accepts: application/json
   /user/subscription:
     get:
       operationId: user_subscription_get
@@ -107,6 +115,7 @@ paths:
           description: Subscription of the logged in user
       summary: Get the subscription of the logged in user
       x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-accepts: application/json
     post:
       operationId: user_subscription_post
       requestBody:
@@ -119,6 +128,8 @@ paths:
           description: Successfully added subscription to the logged in user
       summary: Add a subscription to the logged in user
       x-openapi-router-controller: go_gretzky.controllers.default_controller
+      x-contentType: application/json
+      x-accepts: application/json
 components:
   schemas:
     user_address_body:

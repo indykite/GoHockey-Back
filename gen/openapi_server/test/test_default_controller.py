@@ -17,6 +17,22 @@ from openapi_server.test import BaseTestCase
 class TestDefaultController(BaseTestCase):
     """DefaultController integration test stubs"""
 
+    def test_root_get(self):
+        """Test case for root_get
+
+        Welcome to the GoGretzky API
+        """
+        headers = { 
+            'Accept': 'application/json',
+            'Authorization': 'Bearer special-key',
+        }
+        response = self.client.open(
+            '/',
+            method='GET',
+            headers=headers)
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
     def test_user_address_get(self):
         """Test case for user_address_get
 
