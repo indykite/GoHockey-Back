@@ -1,0 +1,280 @@
+openapi: 3.0.0
+info:
+  description: Go Gretzky is committed to offering you an outstanding range of world
+    class hockey products
+  title: GoGretzky API
+  version: 1.0.0
+servers:
+- url: https://api.example.com
+paths:
+  /:
+    get:
+      operationId: root_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                example: Welcome to the GoGretzky API
+                type: string
+                x-content-type: application/json
+          description: Welcome to the GoGretzky API
+      summary: Welcome to the GoGretzky API
+      x-accepts: application/json
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /user/address:
+    get:
+      operationId: user_address_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: Home address of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the home address of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-accepts: application/json
+    post:
+      operationId: user_address_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_address_body'
+      responses:
+        "200":
+          description: Successfully added home address to the logged in user
+      security:
+      - bearerAuth: []
+      summary: Add a home address to the logged in user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-contentType: application/json
+      x-accepts: application/json
+  /user/child:
+    post:
+      operationId: user_child_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_child_body'
+      responses:
+        "200":
+          description: Successfully added child to the logged in user
+      security:
+      - bearerAuth: []
+      summary: Add a child to the logged in user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-contentType: application/json
+      x-accepts: application/json
+  /user/child/{child_id}:
+    get:
+      operationId: user_child_child_id_get
+      parameters:
+      - description: Id of the child to get
+        explode: false
+        in: path
+        name: child_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_child_body'
+          description: Child information
+      security:
+      - bearerAuth: []
+      summary: Get the child by id
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-accepts: application/json
+  /user/email:
+    get:
+      operationId: user_email_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                example: user@example.com
+                type: string
+                x-content-type: application/json
+          description: Email of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the email of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-accepts: application/json
+  /user/subscription:
+    get:
+      operationId: user_subscription_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: Subscription of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the subscription of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-accepts: application/json
+    post:
+      operationId: user_subscription_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_subscription_body'
+      responses:
+        "200":
+          description: Successfully added subscription to the logged in user
+      security:
+      - bearerAuth: []
+      summary: Add a subscription to the logged in user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-contentType: application/json
+      x-accepts: application/json
+components:
+  schemas:
+    user_address_body:
+      properties:
+        street:
+          example: Main St
+          type: string
+        number:
+          example: 123
+          type: integer
+        city:
+          example: Anytown
+          type: string
+        state:
+          example: CA
+          type: string
+        zip:
+          example: "12345"
+          type: string
+        country:
+          example: USA
+          type: string
+      type: object
+    inline_response_200_1:
+      example:
+        from: 2022-01-01T00:00:00Z
+        to: 2022-12-31T23:59:59Z
+        sku:
+        - SKU22005
+        - SKU22005
+        child: 123e4567-e89b-12d3-a456-426655440000
+      properties:
+        from:
+          example: 2022-01-01T00:00:00Z
+          format: date-time
+          type: string
+        to:
+          example: 2022-12-31T23:59:59Z
+          format: date-time
+          type: string
+        sku:
+          items:
+            example: SKU22005
+            type: string
+          type: array
+        child:
+          example: 123e4567-e89b-12d3-a456-426655440000
+          format: uuid
+          type: string
+      type: object
+    inline_response_200:
+      example:
+        zip: "12345"
+        number: 123
+        country: USA
+        city: Anytown
+        street: Main St
+        state: CA
+      properties:
+        street:
+          example: Main St
+          type: string
+        number:
+          example: 123
+          type: integer
+        city:
+          example: Anytown
+          type: string
+        state:
+          example: CA
+          type: string
+        zip:
+          example: "12345"
+          type: string
+        country:
+          example: USA
+          type: string
+      type: object
+    user_child_body:
+      example:
+        shoe_size: 36
+        gender: male
+        cloth_size: 122
+        helmet_size: 52
+        given_name: John
+        year_of_birth: 2010
+      properties:
+        given_name:
+          example: John
+          type: string
+        year_of_birth:
+          example: 2010
+          format: int32
+          type: integer
+        gender:
+          example: male
+          type: string
+        cloth_size:
+          example: 122
+          format: int32
+          type: integer
+        shoe_size:
+          example: 36
+          format: int32
+          type: integer
+        helmet_size:
+          example: 52
+          format: int32
+          type: integer
+      type: object
+    user_subscription_body:
+      properties:
+        from:
+          example: 2022-01-01T00:00:00Z
+          format: date-time
+          type: string
+        to:
+          example: 2022-12-31T23:59:59Z
+          format: date-time
+          type: string
+        sku:
+          items:
+            example: SKU22005
+            type: string
+          type: array
+        child:
+          example: 123e4567-e89b-12d3-a456-426655440000
+          format: uuid
+          type: string
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-bearerInfoFunc: openapi_server.controllers.authorization_controller.check_bearerAuth
