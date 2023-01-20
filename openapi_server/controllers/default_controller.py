@@ -8,6 +8,9 @@ from openapi_server.models.user_child_body import UserChildBody  # noqa: E501
 from openapi_server.models.user_subscription_body import UserSubscriptionBody  # noqa: E501
 from openapi_server import util
 
+from indykite_sdk.indykite.identity.v1beta1 import identity_management_api_pb2 as pb2
+from indykite_sdk.indykite.identity.v1beta1 import identity_management_api_pb2_grpc as pb2_grpc
+from indykite_sdk.indykite.identity.v1beta1 import attributes_pb2 as attributes
 
 def root_get():  # noqa: E501
     """Welcome to the GoGretzky API
@@ -82,7 +85,17 @@ def user_email_get():  # noqa: E501
 
     :rtype: str
     """
-    return 'do some magic!'
+    response = pb2_grpc.IdentityManagementAPI.GetDigitalTwin(
+        pb2.GetDigitalTwinRequest(
+            id=pb2.DigitalTwinIdentifier(access_token=token),
+            properties=[
+                attributes.PropertyMask(
+                    definition=attributes.PropertyDefinition(property="email")
+                )
+            ]
+        )
+    )
+    return 'OK'
 
 
 def user_subscription_get():  # noqa: E501

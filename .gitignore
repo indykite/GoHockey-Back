@@ -65,3 +65,5 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 /app_agent_credential.json
+/GoHockey_client_secret_google.json
+/backendSA.json
