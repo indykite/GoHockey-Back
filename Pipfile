@@ -4,10 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-connexion = {version = "<=2.3.0", extras = ["swagger-ui"]}
-werkzeug = "==0.16.1"
+connexion = {version = ">=2.6.0", extras = ["swagger-ui"]}
 swagger-ui-bundle = ">=0.0.2"
 python-dateutil = ">=2.6.0"
+indykite-sdk-python = {ref = "v1.10.0", git = "https://github.com/indykite/indykite-sdk-python"}
+python-jose = "3.3.0"
 
 [dev-packages]
 pytest = "~=4.6.7"
