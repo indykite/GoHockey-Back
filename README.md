@@ -8,7 +8,7 @@ is an example of building a OpenAPI-enabled Flask server.
 This example uses the [Connexion](https://github.com/zalando/connexion) library on top of Flask.
 
 ## Requirements
-Python 3.5.2+
+Python 3.11
 
 ## Usage
 To run the server, please execute the following from the root directory:
@@ -17,6 +17,7 @@ To run the server, please execute the following from the root directory:
 pip3 install --user pipenv
 # OR pipx install pipenv
 pipenv install
+pipenv run server
 ```
 
 and open your browser to here:
@@ -29,12 +30,6 @@ Your OpenAPI definition lives here:
 
 ```
 http://localhost:8080/openapi.json
-```
-
-To launch the integration tests, use tox:
-```
-sudo pip install tox
-tox
 ```
 
 ## Running with Docker
