@@ -27,3 +27,9 @@ openapi_server/controllers/*
 Dockerfile
 setup.py
 .gitignore
+.travis.yml
+git_push.sh
+requirements.txt
+test-requirements.txt
+tox.ini
+README.md

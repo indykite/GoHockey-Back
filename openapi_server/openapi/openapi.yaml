@@ -277,4 +277,4 @@ components:
       bearerFormat: JWT
       scheme: bearer
       type: http
-      x-bearerInfoFunc: openapi_server.controllers.authorization_controller.check_bearerAuth
+      x-bearerInfoFunc: openapi_server.controllers.security_controller_.info_from_bearerAuth
