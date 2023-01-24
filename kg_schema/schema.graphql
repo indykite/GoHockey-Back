@@ -1,0 +1,57 @@
+type Child implements Resource {
+	subscriptions: [Subscription!] @relationship(type: "HAS_SUBSCRIPTION", direction: OUT)
+	registered_by: Parent! @relationship(type: "REGISTERED", direction: IN)
+	parents: [Parent!] @relationship(type: "PARENT_OF", direction: IN)
+	cloth_size: ClothSize
+	helmet_size: HelmetSize
+	shoe_size: ShoeSize
+	birthdate: String!
+	given_name: String!
+	gender: String!
+}
+
+type Subscription implements Resource {
+	child: Child! @relationship(type: "HAS_SUBSCRIPTION", direction: IN)
+	delivers_to: Address! @relationship(type: "DELIVERS_TO", direction: OUT)
+	valid_from: String!
+	valid_to: String!
+}
+
+type Parent implements DigitalTwin {
+	parent_of: [Child] @relationship(type: "PARENT_OF", direction: OUT)
+	registered: [Child] @relationship(type: "REGISTERED", direction: OUT)
+	address: Address! @relationship(type: "RECEIVES_AT", direction: OUT)
+	email: IdentityProperty @identityProperty
+	givenname: IdentityProperty @identityProperty
+	lastname: IdentityProperty @identityProperty
+}
+
+type Address implements Resource {
+	subscriptions: [Subscription!] @relationship(type: "DELIVERS_TO", direction: IN)
+	receivers: [Parent!]! @relationship(type: "RECEIVES_AT", direction: IN)
+	zip: String!
+	first_address_line: String!
+	city: String!
+	country: String!
+}
+
+enum ClothSize {
+	110
+	122
+	140
+	150
+}
+
+enum HelmetSize {
+	34
+	36
+	38
+	40
+}
+
+enum ShoeSize {
+	52
+	54
+	56
+	58
+}
