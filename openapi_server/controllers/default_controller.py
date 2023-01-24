@@ -1,5 +1,7 @@
 import connexion
 import six
+from indykite_sdk.identity import IdentityClient
+from flask import abort
 
 from openapi_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from openapi_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
@@ -100,7 +102,8 @@ def user_child_post(user_child_body=None):  # noqa: E501
         "year_of_birth": 2010
     }
 
-def user_email_get():  # noqa: E501
+
+def user_email_get(token_info):  # noqa: E501
     """Get the email of the logged in user
 
      # noqa: E501
@@ -108,8 +111,11 @@ def user_email_get():  # noqa: E501
 
     :rtype: str
     """
-
-    return "user@example.com"
+    client = IdentityClient()
+    digital_twin = client.get_digital_twin_by_token(token_info['indykite_token'], ["email"])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+    return digital_twin['digitalTwin'].properties[0].value
 
 
 def user_subscription_get():  # noqa: E501
@@ -129,6 +135,7 @@ def user_subscription_get():  # noqa: E501
         ],
         "child": "123e4567-e89b-12d3-a456-426655440000"
     }
+
 
 def user_subscription_post(user_subscription_body=None):  # noqa: E501
     """Add a subscription to the logged in user
