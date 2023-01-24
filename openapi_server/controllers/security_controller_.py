@@ -1,5 +1,5 @@
 from indykite_sdk.indykite.identity.v1beta2 import identity_management_api_pb2 as pb2
-
+from flask import g
 import openapi_server.helper.format_helper as helper
 
 
@@ -14,6 +14,7 @@ def info_from_bearerAuth(token):
     :return: Decoded token information or None if token is invalid
     :rtype: dict | None
     """
+    g.indykite_graph_client.set_authorization(token)
     return {'indykite_token': token}
 
 

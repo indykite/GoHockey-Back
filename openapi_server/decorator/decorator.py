@@ -1,6 +1,8 @@
 from indykite_sdk.identity import IdentityClient
 from flask import g, abort
 
+from openapi_server.helper.graphql_client import KnowledgeGraphqlClient
+
 
 def before_request_callback():
     """
@@ -11,6 +13,7 @@ def before_request_callback():
 
     """
     try:
+        g.indykite_graph_client = KnowledgeGraphqlClient()
         g.indykite_client = IdentityClient()
     except Exception as e:
         abort(503, "Failed to open Client connection to Indykite")
