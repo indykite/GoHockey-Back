@@ -8,7 +8,6 @@ from openapi_server.models.user_child_body import UserChildBody  # noqa: E501
 from openapi_server.models.user_subscription_body import UserSubscriptionBody  # noqa: E501
 from openapi_server import util
 
-
 def root_get():  # noqa: E501
     """Welcome to the GoGretzky API
 
@@ -28,7 +27,14 @@ def user_address_get():  # noqa: E501
 
     :rtype: InlineResponse200
     """
-    return 'do some magic!'
+    return {
+        "zip": "12345",
+        "number": 123,
+        "country": "USA",
+        "city": "Anytown",
+        "street": "Main St",
+        "state": "CA"
+    }
 
 
 def user_address_post(user_address_body=None):  # noqa: E501
@@ -43,7 +49,14 @@ def user_address_post(user_address_body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         user_address_body = UserAddressBody.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    return {
+        "street": "Main St",
+        "number": 123,
+        "city": "Anytown",
+        "state": "CA",
+        "zip": "12345",
+        "country": "USA"
+    }
 
 
 def user_child_child_id_get(child_id):  # noqa: E501
@@ -56,7 +69,14 @@ def user_child_child_id_get(child_id):  # noqa: E501
 
     :rtype: UserChildBody
     """
-    return 'do some magic!'
+    return {
+        "shoe_size": 36,
+        "gender": "male",
+        "cloth_size": 122,
+        "helmet_size": 52,
+        "given_name": "John",
+        "year_of_birth": 2010
+    }
 
 
 def user_child_post(user_child_body=None):  # noqa: E501
@@ -71,8 +91,14 @@ def user_child_post(user_child_body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         user_child_body = UserChildBody.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
-
+    return {
+        "shoe_size": 36,
+        "gender": "male",
+        "cloth_size": 122,
+        "helmet_size": 52,
+        "given_name": "John",
+        "year_of_birth": 2010
+    }
 
 def user_email_get():  # noqa: E501
     """Get the email of the logged in user
@@ -82,7 +108,8 @@ def user_email_get():  # noqa: E501
 
     :rtype: str
     """
-    return 'do some magic!'
+
+    return "user@example.com"
 
 
 def user_subscription_get():  # noqa: E501
@@ -93,8 +120,15 @@ def user_subscription_get():  # noqa: E501
 
     :rtype: InlineResponse2001
     """
-    return 'do some magic!'
-
+    return {
+        "from": "2022-01-01T00:00:00Z",
+        "to": "2022-12-31T23:59:59Z",
+        "sku": [
+            "SKU22005",
+            "SKU22005"
+        ],
+        "child": "123e4567-e89b-12d3-a456-426655440000"
+    }
 
 def user_subscription_post(user_subscription_body=None):  # noqa: E501
     """Add a subscription to the logged in user
@@ -108,4 +142,11 @@ def user_subscription_post(user_subscription_body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         user_subscription_body = UserSubscriptionBody.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    return {
+        "from": "2022-01-01T00:00:00Z",
+        "to": "2022-12-31T23:59:59Z",
+        "sku": [
+            "SKU22005"
+        ],
+        "child": "123e4567-e89b-12d3-a456-426655440000"
+    }
