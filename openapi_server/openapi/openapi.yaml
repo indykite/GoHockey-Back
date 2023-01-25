@@ -227,10 +227,7 @@ components:
           type: string
         message_attributes:
           items:
-            oneOf:
-            - type: string
-            - type: integer
-            - type: number
+            $ref: '#/components/schemas/invitation_information_body_message_attributes_inner'
           nullable: true
           type: array
         reference_id:
@@ -246,58 +243,46 @@ components:
           type: string
         tenant_id:
           type: string
+      title: invitation_information_body
       type: object
     invitation_create_body:
       example:
-        tenant_id: gid:abcdefghijklmno
         reference_id: gid:1111kkkkk1111kkkkk111
-        invite_at_time: 0001-01-01T00:00:00Z
-        expire_time: 0001-01-01T00:00:00Z
-        message_attributes:
-        - gid:aakkkkaaakkkaa
         invitee: xxx@xxx.xx
       properties:
-        expire_time:
-          format: date-time
-          type: string
-        invite_at_time:
-          format: date-time
-          type: string
         invitee:
           format: email
           type: string
-        message_attributes:
-          items:
-            oneOf:
-            - type: string
-            - type: integer
-            - type: number
-          nullable: true
-          type: array
         reference_id:
           type: string
-        tenant_id:
-          type: string
+      title: invitation_create_body
     user_address_body:
       properties:
         street:
           example: Main St
+          title: street
           type: string
         number:
           example: 123
+          title: number
           type: integer
         city:
           example: Anytown
+          title: city
           type: string
         state:
           example: CA
+          title: state
           type: string
         zip:
           example: "12345"
+          title: zip
           type: string
         country:
           example: USA
+          title: country
           type: string
+      title: user_address_body
       type: object
     inline_response_200_1:
       example:
@@ -325,6 +310,7 @@ components:
           example: 123e4567-e89b-12d3-a456-426655440000
           format: uuid
           type: string
+      title: inline_response_200_1
       type: object
     inline_response_200:
       example:
@@ -353,6 +339,7 @@ components:
         country:
           example: USA
           type: string
+      title: inline_response_200
       type: object
     user_child_body:
       example:
@@ -385,27 +372,39 @@ components:
           example: 52
           format: int32
           type: integer
+      title: user_child_body
       type: object
     user_subscription_body:
       properties:
         from:
           example: 2022-01-01T00:00:00Z
           format: date-time
+          title: from
           type: string
         to:
           example: 2022-12-31T23:59:59Z
           format: date-time
+          title: to
           type: string
         sku:
           items:
             example: SKU22005
             type: string
+          title: sku
           type: array
         child:
           example: 123e4567-e89b-12d3-a456-426655440000
           format: uuid
+          title: child
           type: string
+      title: user_subscription_body
       type: object
+    invitation_information_body_message_attributes_inner:
+      oneOf:
+      - type: string
+      - type: integer
+      - type: number
+      title: invitation_information_body_message_attributes_inner
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

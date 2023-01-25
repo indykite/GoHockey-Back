@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2391eee3f5e17a0e133a5561f34e60d550ac30d7791f34a32f8a53a317767179"
+            "sha256": "5f416a8ac9c6a3cdc9366746ca644b16eaae22f3d04b7bdf94211d2d1b214061"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -486,7 +486,7 @@
         },
         "indykite-sdk-python": {
             "git": "https://github.com/indykite/indykite-sdk-python",
-            "ref": "e226c92043943ae8e6c137b8a35f7d6367854d6f"
+            "ref": "6ac4f1fe8d6f2a969b74cc8c2df7a7752c1edde7"
         },
         "inflection": {
             "hashes": [

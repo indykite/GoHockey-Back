@@ -1,8 +1,12 @@
 import connexion
 import six
+import openapi_server.controllers.invitation_controller_ as invitation
+import openapi_server.controllers.security_controller_ as sec
+
 from indykite_sdk.identity import IdentityClient
 from flask import abort
 
+from openapi_server.models import InvitationCreateBody
 from openapi_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from openapi_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
 from openapi_server.models.user_address_body import UserAddressBody  # noqa: E501
@@ -183,11 +187,13 @@ def invitation_get(invitation_id):  # noqa: E501
             }
 
 
-def invitation_create(invitation_create_body=None):  # noqa: E501
+def invitation_create(token_info, invitation_create_body=None):  # noqa: E501
     """Invite a parent by email
 
      # noqa: E501
 
+    :param token_info: Bearer token of the user
+    :type token_info: str
     :param invitation_create_body:
     :type invitation_create_body: dict | bytes
 
@@ -195,6 +201,9 @@ def invitation_create(invitation_create_body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         invitation_create_body = InvitationCreateBody.from_dict(connexion.request.get_json())  # noqa: E501
+    i = invitation.create_invitation(token_info['indykite_token'], invitation_create_body.invitee)
+    if i is None:
+        return abort(404, description="Resource not found")
     return "Successfully Created"
 
 
@@ -208,11 +217,15 @@ def invitations_get(parent_id=None):  # noqa: E501
 
     :rtype: InvitationInformationBody
     """
-    return {
-        "shoe_size": 36,
-        "gender": "male",
-        "cloth_size": 122,
-        "helmet_size": 52,
-        "given_name": "John",
-        "year_of_birth": 2010
-    }
+    return [{
+              "tenant_id": "gid:abcdefghijklmno",
+              "message_attributes": [
+                "gid:aakkkkaaakkkaa"
+              ],
+              "reference_id": "gid:1111kkkkk1111kkkkk111",
+              "accepted_by": "gid:kkkkkkiiiiiikkkkkkk",
+              "expire_time": "2000-01-23T04:56:07.000+00:00",
+              "invite_at_time": "2000-01-23T04:56:07.000+00:00",
+              "state": "INVITATION_STATE_ACCEPTED",
+              "invitee": "xxx@xxx.xx"
+            }]
