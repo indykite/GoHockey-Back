@@ -32,14 +32,35 @@ Your OpenAPI definition lives here:
 http://localhost:8080/openapi.json
 ```
 
-## Running with Docker
+## Run in Docker
 
-To run the server on a Docker container, please execute the following from the root directory:
-
-```bash
-# building the image
-docker build -t openapi_server .
-
-# starting up a container
-docker run -p 8080:8080 openapi_server
+```sh
+docker build . -t ghb
+docker run --detach -p8080:8080 --name ghb ghb
+open http://localhost:8080
+[...]
+docker stop ghb
+docker rm ghb
 ```
+
+## Deploy to GCP Cloud Run
+
+**First, commit all changes. Only then run these actions. They use commit SHA to tag the Docker image**
+
+```sh
+# Build docker image
+scripts/build.sh
+
+# Push docker image to the GCR container registry
+scripts/push.sh
+
+# Update the Cloud Run service
+scripts/deploy.sh
+```
+
+## Retrieve details of GCP Cloud Run service
+
+```sh
+gcloud run services list --filter gohockey-back
+```
+
