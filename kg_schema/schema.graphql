@@ -2,12 +2,13 @@ type Child implements Resource {
 	subscriptions: [Subscription!] @relationship(type: "HAS_SUBSCRIPTION", direction: OUT)
 	registered_by: Parent! @relationship(type: "REGISTERED", direction: IN)
 	parents: [Parent!] @relationship(type: "PARENT_OF", direction: IN)
-	cloth_size: ClothSize
-	helmet_size: HelmetSize
-	shoe_size: ShoeSize
+	cloth_size: Int!
+	helmet_size: Int!
+	shoe_size: Int!
 	birthdate: String!
 	given_name: String!
 	gender: String!
+	externalId: String!
 }
 
 type Subscription implements Resource {
@@ -15,6 +16,7 @@ type Subscription implements Resource {
 	delivers_to: Address! @relationship(type: "DELIVERS_TO", direction: OUT)
 	valid_from: String!
 	valid_to: String!
+	externalId: String!
 }
 
 type Parent implements DigitalTwin {
@@ -24,6 +26,11 @@ type Parent implements DigitalTwin {
 	email: IdentityProperty @identityProperty
 	givenname: IdentityProperty @identityProperty
 	lastname: IdentityProperty @identityProperty
+	externalId: String!
+    digitalTwinId: String! @alias(property: "digital_twin_id") @populatedBy(operations: [CREATE, UPDATE], callback: "digitalTwinId")
+    tenantId: String! @readonly
+    kind: DigitalTwinKind! @readonly
+    tags: [String!]! @readonly
 }
 
 type Address implements Resource {
@@ -33,25 +40,5 @@ type Address implements Resource {
 	first_address_line: String!
 	city: String!
 	country: String!
-}
-
-enum ClothSize {
-	110
-	122
-	140
-	150
-}
-
-enum HelmetSize {
-	34
-	36
-	38
-	40
-}
-
-enum ShoeSize {
-	52
-	54
-	56
-	58
+	externalId: String!
 }
