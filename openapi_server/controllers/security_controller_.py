@@ -21,23 +21,49 @@ def info_from_bearerAuth(token):
 
 
 def create_identity_client_connection():
+    """
+    Creates a client connection to Indykite platform using the indykite-sdk-python IdentityClient.
+    If it managed to create the connection then it returns with the connection, otherwise it returns with None.
+    Whatever will use this function need to handle the connection failure.
+    Returns: connection if it established successfully, None otherwise.
+
+    """
     try:
         client = IdentityClient(False)
         return client
     except Exception as e:
-        logging.debug("Failed to open Client connection to Indykite: %s" % e)
-        return e
+        logging.info("Failed to open Client connection to Indykite: %s" % e)
+        return None
 
 
 def close_identity_client_connection(client):
+    """
+    Attempts to close the given client connection to Indykite platform. It's a courtesy method to not open too much
+    connection to the platform and try to avoid unnecessary _InactiveRpc errors
+    Args:
+        client: The client connection to Indykite platform
+
+    Returns: It doesn't return anything
+
+    """
     try:
         client.channel.close()
         logging.info("Client connection has been closed")
     except Exception as e:
-        logging.debug("Failed to close the Client connection to Indykite: %s" % e)
+        logging.info("Failed to close the Client connection to Indykite: %s" % e)
 
 
 def introspect_token(client, token):
+    """
+    Sends and introspect token request to Indykite platform via indykite-sdk-python package. Upon success, it decodes
+    the response into a json dictionary for proper handling
+    Args:
+        client: the open client connection to Indykite platform
+        token: the token to introspect
+
+    Returns: dictionary with the response or None if there were any errors
+
+    """
     try:
         resp = client.stub.TokenIntrospect(
             pb2.TokenIntrospectRequest(token=token)
