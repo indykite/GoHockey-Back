@@ -163,28 +163,22 @@ def user_subscription_post(user_subscription_body=None):  # noqa: E501
     }
 
 
-def invitation_get(invitation_id):  # noqa: E501
+def invitation_get(token_info, invitation_id):  # noqa: E501
     """Get the invitation by id
 
      # noqa: E501
 
+    param token_info: Bearer token of the user
+    :type token_info: str
     :param invitation_id: Id of the invitation to get
     :type invitation_id: str
 
     :rtype: InvitationInformationBody
     """
-    return {
-              "tenant_id": "gid:abcdefghijklmno",
-              "message_attributes": [
-                "gid:aakkkkaaakkkaa"
-              ],
-              "reference_id": "gid:1111kkkkk1111kkkkk111",
-              "accepted_by": "gid:kkkkkkiiiiiikkkkkkk",
-              "expire_time": "2000-01-23T04:56:07.000+00:00",
-              "invite_at_time": "2000-01-23T04:56:07.000+00:00",
-              "state": "INVITATION_STATE_ACCEPTED",
-              "invitee": "xxx@xxx.xx"
-            }
+    resp = invitation.get_one_invitation(token_info['indykite_token'], invitation_id)
+    if resp is None:
+        return abort(404, description="Resource not found")
+    return resp
 
 
 def invitation_create(token_info, invitation_create_body=None):  # noqa: E501
@@ -201,8 +195,12 @@ def invitation_create(token_info, invitation_create_body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         invitation_create_body = InvitationCreateBody.from_dict(connexion.request.get_json())  # noqa: E501
-    i = invitation.create_invitation(token_info['indykite_token'], invitation_create_body.invitee)
-    if i is None:
+    resp = invitation.create_invitation(
+        token_info['indykite_token'],
+        invitation_create_body.invitee,
+        invitation_create_body.reference_id
+    )
+    if resp is None:
         return abort(404, description="Resource not found")
     return "Successfully Created"
 
