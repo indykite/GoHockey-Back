@@ -111,6 +111,64 @@ paths:
       summary: Get the email of the logged in user
       x-openapi-router-controller: openapi_server.controllers.default_controller
       x-accepts: application/json
+  /user/invitation:
+    post:
+      operationId: invitation_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/invitation_create_body'
+      responses:
+        "200":
+          description: Successfully sent out the invitation
+      security:
+      - bearerAuth: []
+      summary: Create an invitation and sends out an email to the given email address
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-contentType: application/json
+      x-accepts: application/json
+  /user/invitation/{invitation_id}:
+    get:
+      operationId: invitation_get
+      parameters:
+      - description: Id of the invitation
+        explode: false
+        in: path
+        name: invitation_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invitation_information_body'
+          description: Invitation information
+      security:
+      - bearerAuth: []
+      summary: Get the invitation information with the given ID
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-accepts: application/json
+  /user/invitations:
+    get:
+      operationId: invitations_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/invitation_information_body'
+                type: array
+          description: Invitation information
+      security:
+      - bearerAuth: []
+      summary: Get all the invitations of the user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-accepts: application/json
   /user/subscription:
     get:
       operationId: user_subscription_get
@@ -144,6 +202,82 @@ paths:
       x-accepts: application/json
 components:
   schemas:
+    invitation_information_body:
+      example:
+        tenant_id: gid:abcdefghijklmno
+        message_attributes:
+        - gid:aakkkkaaakkkaa
+        reference_id: gid:1111kkkkk1111kkkkk111
+        accepted_by: gid:kkkkkkiiiiiikkkkkkk
+        expire_time: 2000-01-23T04:56:07.000+00:00
+        invite_at_time: 2000-01-23T04:56:07.000+00:00
+        state: INVITATION_STATE_ACCEPTED
+        invitee: xxx@xxx.xx
+      properties:
+        accepted_by:
+          nullable: true
+          type: string
+        expire_time:
+          format: date-time
+          type: string
+        invite_at_time:
+          format: date-time
+          type: string
+        invitee:
+          type: string
+        message_attributes:
+          items:
+            oneOf:
+            - type: string
+            - type: integer
+            - type: number
+          nullable: true
+          type: array
+        reference_id:
+          type: string
+        state:
+          enum:
+          - INVITATION_STATE_INVALID
+          - INVITATION_STATE_IN_FUTURE
+          - INVITATION_STATE_PENDING
+          - INVITATION_STATE_ACCEPTED
+          - INVITATION_STATE_EXPIRED
+          - INVITATION_STATE_CANCELLED
+          type: string
+        tenant_id:
+          type: string
+      type: object
+    invitation_create_body:
+      example:
+        tenant_id: gid:abcdefghijklmno
+        reference_id: gid:1111kkkkk1111kkkkk111
+        invite_at_time: 0001-01-01T00:00:00Z
+        expire_time: 0001-01-01T00:00:00Z
+        message_attributes:
+        - gid:aakkkkaaakkkaa
+        invitee: xxx@xxx.xx
+      properties:
+        expire_time:
+          format: date-time
+          type: string
+        invite_at_time:
+          format: date-time
+          type: string
+        invitee:
+          format: email
+          type: string
+        message_attributes:
+          items:
+            oneOf:
+            - type: string
+            - type: integer
+            - type: number
+          nullable: true
+          type: array
+        reference_id:
+          type: string
+        tenant_id:
+          type: string
     user_address_body:
       properties:
         street:
