@@ -9,6 +9,7 @@ swagger-ui-bundle = ">=0.0.2"
 python-dateutil = ">=2.6.0"
 indykite-sdk-python = {ref = "v1.10.0", git = "https://github.com/indykite/indykite-sdk-python"}
 python-jose = "3.3.0"
+protobuf = "*"
 
 [dev-packages]
 pytest = "~=4.6.7"
