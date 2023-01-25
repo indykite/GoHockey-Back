@@ -1,4 +1,3 @@
-import logging
 import openapi_server.helper.format_helper as helper
 
 from typing import List
@@ -12,7 +11,7 @@ def info_from_bearerAuth(token):
     Returned value will be passed in 'token_info' parameter of your operation function, if there is one.
     'sub' or 'uid' will be set in 'user' parameter of your operation function, if there is one.
 
-    :param token Token provided by Authorization header
+    :param token: Token provided by Authorization header
     :type token: str
     :return: Decoded token information or None if token is invalid
     :rtype: dict | None
@@ -29,10 +28,10 @@ def create_identity_client_connection():
 
     """
     try:
-        client = IdentityClient(False)
+        client = IdentityClient()
         return client
     except Exception as e:
-        logging.info("Failed to open Client connection to Indykite: %s" % e)
+        print("Failed to open Client connection to Indykite: %s" % e)
         return None
 
 
@@ -48,9 +47,9 @@ def close_identity_client_connection(client):
     """
     try:
         client.channel.close()
-        logging.info("Client connection has been closed")
+        print("Client connection has been closed")
     except Exception as e:
-        logging.info("Failed to close the Client connection to Indykite: %s" % e)
+        print("Failed to close the Client connection to Indykite: %s" % e)
 
 
 def introspect_token(client, token):
@@ -69,10 +68,10 @@ def introspect_token(client, token):
             pb2.TokenIntrospectRequest(token=token)
         )
         formatted_response = helper.decode_response(resp)
-        logging.info("Token introspection was success for the following digital twin: %s"
+        print("Token introspection was success for the following digital twin: %s"
                      % formatted_response['tokenInfo']['customerId'])
     except Exception as e:
-        logging.info("Introspection failed: %s" % e)
+        print("Introspection failed: %s" % e)
         return None
 
     return formatted_response
