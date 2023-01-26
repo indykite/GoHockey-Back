@@ -1,10 +1,9 @@
 import connexion
-from flask import abort
-from flask import g
 from retrying import RetryError
+from flask import abort, jsonify, g
+from indykite_sdk.identity import IdentityClient
 
 import openapi_server.controllers.invitation_controller_ as invitation
-import openapi_server.controllers.get_controller_ as get_info
 import openapi_server.controllers.patch_controller_ as patch
 
 from openapi_server.models import InvitationCreateBody
@@ -44,26 +43,46 @@ def user_address_get():  # noqa: E501
     }
 
 
-def user_address_post(user_address_body=None):  # noqa: E501
+def user_address_post(token_info, user_address_body=None):  # noqa: E501
     """Add a home address to the logged in user
 
      # noqa: E501
 
-    :param user_address_body: 
+    :param token_info: user_address_body:
     :type user_address_body: dict | bytes
 
     :rtype: None
     """
     if connexion.request.is_json:
         user_address_body = UserAddressBody.from_dict(connexion.request.get_json())  # noqa: E501
-    return {
-        "street": "Main St",
-        "number": 123,
-        "city": "Anytown",
-        "state": "CA",
-        "zip": "12345",
-        "country": "USA"
+    if user_address_body:
+        return abort(400, description="Address empty or invalid")
+    client = IdentityClient()
+    digital_twin = client.get_digital_twin_by_token(token_info['indykite_token'], ["uuid"])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+    data = {
+        "street": user_address_body.street,
+        "number": user_address_body.number,
+        "city": user_address_body.city,
+        "state": user_address_body.state,
+        "zip": user_address_body.zip,
+        "country": user_address_body.country,
+        "subscriptions": None,
+        "parent": digital_twin['digitalTwin'].properties[0].value
     }
+    # Note: Passing the request to the context is optional.
+    # In Flask, the current request is always accessible as flask.request
+    success, result = graphql_sync(
+        schema,
+        data,
+        context_value=request,
+        debug=app.debug
+    )
+
+    if not success:
+        return abort(422, description="KB error")
+    return jsonify(result), 200
 
 
 def user_child_child_id_get(child_id):  # noqa: E501

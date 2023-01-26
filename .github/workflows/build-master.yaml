@@ -1,0 +1,55 @@
+name: build-master
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+    deploy-master:
+        permissions:
+            contents: read
+            id-token: write
+        runs-on: ubuntu-latest
+        env:
+            GCR_URL: gcr.io
+            GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+            DOCKER_BUILDKIT: 1
+            SERVICE: gohockey-back
+
+        steps:
+            - name: Check out repo
+              uses: actions/checkout@v3
+
+            - name: Setup ENV variables
+              run: |
+                  echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+            - name: Authenticate to Google Cloud
+              id: auth
+              uses: google-github-actions/auth@v1
+              with:
+                  workload_identity_provider: projects/699926043561/locations/global/workloadIdentityPools/github-dev/providers/github-dev-provider
+                  service_account: hackathon-go-hockey@jarvis-dev-268314.iam.gserviceaccount.com
+
+            - name: Configure Docker
+              id: config-docker
+              run: |-
+                  gcloud --quiet auth configure-docker
+
+            - name: Build & Tag docker image
+              id: build-push
+              run: |
+                  docker build -t ${GCR_URL}/${GCP_PROJECT_ID}/hackathon/${SERVICE}:${SHORT_SHA} .
+
+            - name: Publish docker image
+              id: push
+              run: |
+                  docker push ${GCR_URL}/${GCP_PROJECT_ID}/hackathon/${SERVICE}:${SHORT_SHA}
+
+            # - name: Deploy to Google Cloud run
+            #   id: deploy
+            #   uses: 'google-github-actions/deploy-cloudrun@v1'
+            #   with:
+            #       service: 'hackathon-${SERVICE}'
+            #       image: 'gcr.io/jarvis-dev-268314/hackathon/${SERVICE}:${SHORT_SHA}'
