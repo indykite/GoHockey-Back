@@ -9,5 +9,6 @@ from openapi_server.models.invitation_create_body import InvitationCreateBody
 from openapi_server.models.invitation_information_body import InvitationInformationBody
 from openapi_server.models.invitation_information_body_message_attributes_inner import InvitationInformationBodyMessageAttributesInner
 from openapi_server.models.user_address_body import UserAddressBody
+from openapi_server.models.user_body import UserBody
 from openapi_server.models.user_child_body import UserChildBody
 from openapi_server.models.user_subscription_body import UserSubscriptionBody

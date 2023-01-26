@@ -1,6 +1,6 @@
 .dockerignore
 openapi_server/__init__.py
-openapi_server/__main__.py
+openapi_server/controllers/__init__.py
 openapi_server/encoder.py
 openapi_server/models/__init__.py
 openapi_server/models/base_model_.py
@@ -10,6 +10,7 @@ openapi_server/models/invitation_create_body.py
 openapi_server/models/invitation_information_body.py
 openapi_server/models/invitation_information_body_message_attributes_inner.py
 openapi_server/models/user_address_body.py
+openapi_server/models/user_body.py
 openapi_server/models/user_child_body.py
 openapi_server/models/user_subscription_body.py
 openapi_server/openapi/openapi.yaml
