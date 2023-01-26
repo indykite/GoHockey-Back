@@ -60,7 +60,7 @@ def get_all_invitations(token):
     invitation_information = []
     info = g.indykite_client.get_digital_twin_by_token(token, ["nnin"])
     if info is not None:
-        ids = response_processor.get_all_reference_id_from_get_digital_twin_response(format_helper.decode_response(info))
+        ids = response_processor.get_all_reference_id_from_get_digital_twin_response(info)
 
         for i in ids:
             r = get_one_invitation(i)
