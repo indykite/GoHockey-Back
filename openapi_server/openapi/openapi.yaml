@@ -247,13 +247,10 @@ components:
       type: object
     invitation_create_body:
       example:
-        reference_id: gid:1111kkkkk1111kkkkk111
         invitee: xxx@xxx.xx
       properties:
         invitee:
           format: email
-          type: string
-        reference_id:
           type: string
       title: invitation_create_body
     user_address_body:

@@ -15,26 +15,21 @@ class InvitationCreateBody(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, invitee=None, reference_id=None):  # noqa: E501
+    def __init__(self, invitee=None):  # noqa: E501
         """InvitationCreateBody - a model defined in OpenAPI
 
         :param invitee: The invitee of this InvitationCreateBody.  # noqa: E501
         :type invitee: str
-        :param reference_id: The reference_id of this InvitationCreateBody.  # noqa: E501
-        :type reference_id: str
         """
         self.openapi_types = {
-            'invitee': str,
-            'reference_id': str
+            'invitee': str
         }
 
         self.attribute_map = {
-            'invitee': 'invitee',
-            'reference_id': 'reference_id'
+            'invitee': 'invitee'
         }
 
         self._invitee = invitee
-        self._reference_id = reference_id
 
     @classmethod
     def from_dict(cls, dikt) -> 'InvitationCreateBody':
@@ -67,24 +62,3 @@ class InvitationCreateBody(Model):
         """
 
         self._invitee = invitee
-
-    @property
-    def reference_id(self):
-        """Gets the reference_id of this InvitationCreateBody.
-
-
-        :return: The reference_id of this InvitationCreateBody.
-        :rtype: str
-        """
-        return self._reference_id
-
-    @reference_id.setter
-    def reference_id(self, reference_id):
-        """Sets the reference_id of this InvitationCreateBody.
-
-
-        :param reference_id: The reference_id of this InvitationCreateBody.
-        :type reference_id: str
-        """
-
-        self._reference_id = reference_id

@@ -1,6 +1,7 @@
 import connexion
 from flask import abort
 from flask import g
+from retrying import RetryError
 
 import openapi_server.controllers.invitation_controller_ as invitation
 from openapi_server.models import InvitationCreateBody
@@ -191,14 +192,19 @@ def invitation_create(token_info, invitation_create_body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         invitation_create_body = InvitationCreateBody.from_dict(connexion.request.get_json())  # noqa: E501
-    resp = invitation.create_invitation(
-        token_info['indykite_token'],
-        invitation_create_body.invitee,
-        invitation_create_body.reference_id
-    )
+    try:
+        resp = invitation.create_invitation(
+            token_info['indykite_token'],
+            invitation_create_body.invitee
+        )
+        print("Response: %s" % resp)
+    except RetryError:
+        return abort(404, description="Failed to send out the invitation")
     if resp is None:
-        return abort(404, description="Resource not found")
-    return "Successfully Created"
+        return abort(404, description="Sending invitation failed")
+    return {
+        "reference_id": resp["reference_id"]
+    }
 
 
 def invitations_get(parent_id=None):  # noqa: E501
