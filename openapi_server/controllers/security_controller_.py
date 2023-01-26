@@ -2,6 +2,8 @@ from indykite_sdk.indykite.identity.v1beta2 import identity_management_api_pb2 a
 from flask import g
 import openapi_server.helper.format_helper as helper
 
+from flask import g
+
 
 def info_from_bearerAuth(token):
     """
@@ -18,19 +20,18 @@ def info_from_bearerAuth(token):
     return {'indykite_token': token}
 
 
-def introspect_token(client, token):
+def introspect_token(token):
     """
     Sends and introspect token request to Indykite platform via indykite-sdk-python package. Upon success, it decodes
     the response into a json dictionary for proper handling
     Args:
-        client: the open client connection to Indykite platform
         token: the token to introspect
 
     Returns: dictionary with the response or None if there were any errors
 
     """
     try:
-        resp = client.stub.TokenIntrospect(
+        resp = g.indykite_client.stub.TokenIntrospect(
             pb2.TokenIntrospectRequest(token=token)
         )
         formatted_response = helper.decode_response(resp)

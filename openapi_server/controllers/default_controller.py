@@ -1,8 +1,10 @@
 import connexion
+from retrying import RetryError
 from flask import abort, jsonify, g
-from indykite_sdk.identity import IdentityClient
 
 import openapi_server.controllers.invitation_controller_ as invitation
+import openapi_server.helper.patch_calls as patch
+
 from openapi_server.models import InvitationCreateBody
 from openapi_server.models.inline_response200 import InlineResponse200  # noqa: E501
 from openapi_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
@@ -54,8 +56,7 @@ def user_address_post(token_info, user_address_body=None):  # noqa: E501
         user_address_body = UserAddressBody.from_dict(connexion.request.get_json())  # noqa: E501
     if user_address_body:
         return abort(400, description="Address empty or invalid")
-    client = IdentityClient()
-    digital_twin = client.get_digital_twin_by_token(token_info['indykite_token'], ["uuid"])
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], ["uuid"])
     if digital_twin is None:
         return abort(404, description="Resource not found")
     data = {
@@ -179,26 +180,24 @@ def user_subscription_post(user_subscription_body=None):  # noqa: E501
     }
 
 
-def invitation_get(token_info, invitation_id):  # noqa: E501
+def invitation_get(invitation_id):  # noqa: E501
     """Get the invitation by id
 
      # noqa: E501
 
-    param token_info: Bearer token of the user
-    :type token_info: dict
     :param invitation_id: Id of the invitation to get
     :type invitation_id: str
 
     :rtype: InvitationInformationBody
     """
-    resp = invitation.get_one_invitation(token_info['indykite_token'], invitation_id)
+    resp = invitation.get_one_invitation(invitation_id)
     if resp is None:
         return abort(404, description="Resource not found")
     return resp
 
 
 def invitation_create(token_info, invitation_create_body=None):  # noqa: E501
-    """Invite a parent by email
+    """Invite a parent by email and stores the generated reference ID as an extid in the inviter's property
 
      # noqa: E501
 
@@ -211,35 +210,33 @@ def invitation_create(token_info, invitation_create_body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         invitation_create_body = InvitationCreateBody.from_dict(connexion.request.get_json())  # noqa: E501
-    resp = invitation.create_invitation(
-        token_info['indykite_token'],
-        invitation_create_body.invitee,
-        invitation_create_body.reference_id
-    )
+    try:
+        resp = invitation.create_invitation(
+            token_info['indykite_token'],
+            invitation_create_body.invitee
+        )
+        print("Response: %s" % resp)
+    except RetryError:
+        return abort(404, description="Failed to send out the invitation")
     if resp is None:
-        return abort(404, description="Resource not found")
-    return "Successfully Created"
+        return abort(404, description="Sending invitation failed")
+
+    patch.add_invitation_to_inviter_digital_twin_properties(token_info['indykite_token'], resp["reference_id"])
+
+    return {
+        "reference_id": resp["reference_id"]
+    }
 
 
-def invitations_get(parent_id=None):  # noqa: E501
+def invitations_get(token_info):  # noqa: E501
     """Gets all invitations for the parent
 
      # noqa: E501
 
-     :param parent_id: The GID of the parent who's invitations should be listed
-     :type parent_id: str
+    :param token_info: Bearer token of the user
+    :type token_info: dict
 
     :rtype: InvitationInformationBody
     """
-    return [{
-        "tenant_id": "gid:abcdefghijklmno",
-        "message_attributes": [
-            "gid:aakkkkaaakkkaa"
-        ],
-        "reference_id": "gid:1111kkkkk1111kkkkk111",
-        "accepted_by": "gid:kkkkkkiiiiiikkkkkkk",
-        "expire_time": "2000-01-23T04:56:07.000+00:00",
-        "invite_at_time": "2000-01-23T04:56:07.000+00:00",
-        "state": "INVITATION_STATE_ACCEPTED",
-        "invitee": "xxx@xxx.xx"
-    }]
+    info = invitation.get_all_invitations(token_info['indykite_token'])
+    return info

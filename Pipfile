@@ -11,6 +11,8 @@ indykite-sdk-python = {ref = "v1.10.1", git = "https://github.com/indykite/indyk
 python-jose = "3.3.0"
 gql = "3.4.0"
 protobuf = "*"
+retry = "*"
+retrying = "*"
 requests = "2.28.2"
 requests-toolbelt = "2.1.0"
 
