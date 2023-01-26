@@ -12,16 +12,13 @@ def add_invitation_to_inviter_digital_twin_properties(token, reference_id):
                     id=pb2.DigitalTwinIdentifier(
                         access_token=token
                     ),
-                    operations=attribute.PropertyBatchOperation(
-                      add=attribute.Property(
-                        definition=attribute.PropertyDefinition(property="extid"),
-                        object_value=objects.Value(
-                          map_value=objects.ArrayValue(
-                            values=objects.Value(string_value=reference_id)
-                          )
-                        )
+                    operations=[
+                      attribute.PropertyBatchOperation(
+                        add=attribute.Property(
+                          definition=attribute.PropertyDefinition(property="nnin"),
+                          object_value=objects.Value(string_value=str(reference_id)))
                       )
-                    )
+                    ]
                 )
             )
         print("Response for patch: %s" % response)
