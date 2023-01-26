@@ -1,10 +1,9 @@
 import connexion
 from retrying import RetryError
 from flask import abort, jsonify, g
-from indykite_sdk.identity import IdentityClient
 
 import openapi_server.controllers.invitation_controller_ as invitation
-import openapi_server.controllers.patch_controller_ as patch
+import openapi_server.helper.patch_calls as patch
 
 from openapi_server.models import InvitationCreateBody
 from openapi_server.models.inline_response200 import InlineResponse200  # noqa: E501
@@ -57,8 +56,7 @@ def user_address_post(token_info, user_address_body=None):  # noqa: E501
         user_address_body = UserAddressBody.from_dict(connexion.request.get_json())  # noqa: E501
     if user_address_body:
         return abort(400, description="Address empty or invalid")
-    client = IdentityClient()
-    digital_twin = client.get_digital_twin_by_token(token_info['indykite_token'], ["uuid"])
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], ["uuid"])
     if digital_twin is None:
         return abort(404, description="Resource not found")
     data = {

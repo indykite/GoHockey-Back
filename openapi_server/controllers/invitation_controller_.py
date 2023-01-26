@@ -4,7 +4,6 @@ from retrying import retry
 from indykite_sdk.indykite.identity.v1beta2 import identity_management_api_pb2 as pb2
 from indykite_sdk.indykite.objects.v1beta1 import struct_pb2 as objects
 
-import openapi_server.controllers.get_controller_ as get_info
 import openapi_server.controllers.security_controller_ as sec
 from openapi_server.helper import format_helper, response_processor
 
@@ -59,7 +58,7 @@ def get_one_invitation(invitation_id):
 
 def get_all_invitations(token):
     invitation_information = []
-    info = get_info.get_digital_twin_info_by_token(token, ["nnin"])
+    info = g.indykite_client.get_digital_twin_by_token(token, ["nnin"])
     if info is not None:
         ids = response_processor.get_all_reference_id_from_get_digital_twin_response(format_helper.decode_response(info))
 
