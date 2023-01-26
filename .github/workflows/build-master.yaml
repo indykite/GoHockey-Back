@@ -14,6 +14,7 @@ jobs:
         env:
             GCR_URL: gcr.io
             GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+            GCP_REGION: europe-west1
             DOCKER_BUILDKIT: 1
             SERVICE: gohockey-back
 
@@ -30,7 +31,7 @@ jobs:
               uses: google-github-actions/auth@v1
               with:
                   workload_identity_provider: projects/699926043561/locations/global/workloadIdentityPools/github-dev/providers/github-dev-provider
-                  service_account: hackathon-go-hockey@jarvis-dev-268314.iam.gserviceaccount.com
+                  service_account: hackathon-go-hockey@${{ env.GCP_PROJECT_ID }}.iam.gserviceaccount.com
 
             - name: Configure Docker
               id: config-docker
@@ -47,9 +48,11 @@ jobs:
               run: |
                   docker push ${GCR_URL}/${GCP_PROJECT_ID}/hackathon/${SERVICE}:${SHORT_SHA}
 
-            # - name: Deploy to Google Cloud run
-            #   id: deploy
-            #   uses: 'google-github-actions/deploy-cloudrun@v1'
-            #   with:
-            #       service: 'hackathon-${SERVICE}'
-            #       image: 'gcr.io/jarvis-dev-268314/hackathon/${SERVICE}:${SHORT_SHA}'
+            - name: Deploy to Google Cloud Run
+              id: deploy
+              uses: 'google-github-actions/deploy-cloudrun@v1'
+              with:
+                  region: '${{ env.GCP_REGION }}'
+                  service: 'hackathon-${{ env.SERVICE }}'
+                  image: 'gcr.io/${{ env.GCP_PROJECT_ID }}/hackathon/${{ env.SERVICE }}:${{ env.SHORT_SHA }}'
+
