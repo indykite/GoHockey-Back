@@ -20,5 +20,11 @@ query Children($where: ChildWhere) {
     given_name
     gender
     externalId
+    parents {
+      email
+      givenname
+      lastname
+      externalId
+    }
   }
 }
