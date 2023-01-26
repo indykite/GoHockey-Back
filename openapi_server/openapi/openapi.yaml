@@ -22,6 +22,35 @@ paths:
       summary: Welcome to the GoGretzky API
       x-accepts: application/json
       x-openapi-router-controller: openapi_server.controllers.default_controller
+  /user:
+    get:
+      operationId: user_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_body'
+          description: Information of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the information about the logged in user
+      x-openapi-router-controller: openapi_server.controllers.user_controller
+      x-accepts: application/json
+    post:
+      operationId: user_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_body'
+      responses:
+        "200":
+          description: Successfully added user
+      summary: Add a user
+      x-openapi-router-controller: openapi_server.controllers.user_controller
+      x-contentType: application/json
+      x-accepts: application/json
   /user/address:
     get:
       operationId: user_address_get
@@ -67,7 +96,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Add a child to the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.child_controller
       x-contentType: application/json
       x-accepts: application/json
   /user/child/{child_id}:
@@ -92,7 +121,24 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the child by id
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.child_controller
+      x-accepts: application/json
+  /user/children:
+    get:
+      operationId: user_children_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/user_child_body'
+                type: array
+          description: Children of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the children of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.child_controller
       x-accepts: application/json
   /user/email:
     get:
@@ -109,7 +155,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the email of the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.user_controller
       x-accepts: application/json
   /user/invitation:
     post:
@@ -169,6 +215,23 @@ paths:
       summary: Get all the invitations of the user
       x-openapi-router-controller: openapi_server.controllers.default_controller
       x-accepts: application/json
+  /user/parents:
+    get:
+      operationId: user_parents_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/user_body'
+                type: array
+          description: Parents of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the parents of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.user_controller
+      x-accepts: application/json
   /user/subscription:
     get:
       operationId: user_subscription_get
@@ -182,7 +245,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the subscription of the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
       x-accepts: application/json
     post:
       operationId: user_subscription_post
@@ -197,11 +260,38 @@ paths:
       security:
       - bearerAuth: []
       summary: Add a subscription to the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
       x-contentType: application/json
+      x-accepts: application/json
+  /user/subscriptions:
+    get:
+      operationId: user_subscriptions_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+                type: array
+          description: Subscriptions of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the subscriptions of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
       x-accepts: application/json
 components:
   schemas:
+    user_body:
+      example:
+        name: John Doe
+        email: xxx@xxx.xx
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+      title: user_body
     invitation_information_body:
       example:
         tenant_id: gid:abcdefghijklmno

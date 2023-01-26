@@ -22,7 +22,13 @@
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
 
-openapi_server/controllers/*
+openapi_server/controllers/default_controller.py
+openapi_server/controllers/invitations_controller_.py
+openapi_server/controllers/security_controller_.py
+openapi_server/controllers/users_controller.py
+openapi_server/controllers/child_controller.py
+openapi_server/controllers/subscription_controller.py
+openapi_server/__main__.py
 .openapi-generator-ignore
 Dockerfile
 setup.py
