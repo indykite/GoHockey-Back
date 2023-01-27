@@ -39,14 +39,11 @@ paths:
       x-accepts: application/json
     post:
       operationId: user_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/user_body'
       responses:
         "200":
           description: Successfully added user
+      security:
+      - bearerAuth: []
       summary: Add a user
       x-openapi-router-controller: openapi_server.controllers.user_controller
       x-contentType: application/json
