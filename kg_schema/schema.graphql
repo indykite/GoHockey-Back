@@ -35,11 +35,12 @@ type Parent implements DigitalTwin {
 }
 
 type Address implements Resource {
-    subscriptions: [HockeySubscription!]! @relationship(type: "DELIVERS_TO", direction: IN)
+    subscriptions: [HockeySubscription!] @relationship(type: "DELIVERS_TO", direction: IN)
     receivers: [Parent!]! @relationship(type: "RECEIVES_AT", direction: IN)
     zip: String!
-    first_address_line: String!
+    number: Int!
     city: String!
-    country: String!
+    street: String!
+    state: String!
     externalId: String!
 }
