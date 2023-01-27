@@ -1,0 +1,17 @@
+"""
+{
+  "where": {
+    "externalId":"1453851837"
+  }
+}
+"""
+query Address($where: AddressWhere) {
+  addresses(where: $where) {
+    zip
+    number
+    city
+    street
+    state
+    externalId
+  }
+}
