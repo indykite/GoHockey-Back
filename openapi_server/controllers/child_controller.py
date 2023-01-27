@@ -1,14 +1,7 @@
 import connexion
-from flask import abort, jsonify, g
-from indykite_sdk.identity import IdentityClient
-
-import openapi_server.controllers.invitation_controller_ as invitation
-from openapi_server.models import InvitationCreateBody
-from openapi_server.models.inline_response200 import InlineResponse200  # noqa: E501
-from openapi_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
-from openapi_server.models.user_address_body import UserAddressBody  # noqa: E501
 from openapi_server.models.user_child_body import UserChildBody  # noqa: E501
-from openapi_server.models.user_subscription_body import UserSubscriptionBody  # noqa: E501
+from openapi_server.graphql_queries.get_child import get_child_query
+from flask import abort, g
 
 
 def user_children_get(token_info):
@@ -36,24 +29,30 @@ def user_children_get(token_info):
     ]
 
 
-def user_child_child_id_get(child_id):  # noqa: E501
+def user_child_child_id_get(token_info, child_id):  # noqa: E501
     """Get the child by id
 
      # noqa: E501
 
+    :param token_info:
     :param child_id: Id of the child to get
     :type child_id: str
 
     :rtype: UserChildBody
     """
-    return {
-        "shoe_size": 36,
-        "gender": "male",
-        "cloth_size": 122,
-        "helmet_size": 52,
-        "given_name": "John",
-        "year_of_birth": 2010
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+    get_child_params = {
+        "where": {
+            "parents_SOME": {
+                "digitalTwinId": digital_twin['digitalTwin'].id
+            },
+            "externalId": child_id
+        }
     }
+    child = g.indykite_graph_client.execute(get_child_query, get_child_params)
+    return child
 
 
 def user_child_post(user_child_body=None):  # noqa: E501

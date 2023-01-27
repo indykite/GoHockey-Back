@@ -19,24 +19,12 @@ class KnowledgeGraphqlClient:
             url=self.addr,
             verify=True,
             retries=3,
-            headers={"Authorization": token},
+            headers={"Authorization": os.getenv('TMP_TOKEN')},
         )
         # Create a GraphQL client using the defined transport
         self.client = Client(transport=self.transport, fetch_schema_from_transport=True)
 
-    def execute(self, query):
+    def execute(self, query, params=None):
         if not self.client:
             abort(503, "KnowledgeGraphqlClient client is not initialized")
-        return self.client.execute(query)
-
-    # Provide a GraphQL query
-    query = gql(
-        """
-        query getContinents {
-          continents {
-            code
-            name
-          }
-        }
-    """
-    )
+        return self.client.execute(query, variable_values=params)

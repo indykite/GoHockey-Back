@@ -24,7 +24,7 @@ def root_get():  # noqa: E501
     return 'Welcome to the GoGretzky API'
 
 
-def user_address_get():  # noqa: E501
+def user_address_get(token_info):  # noqa: E501
     """Get the home address of the logged in user
 
      # noqa: E501
@@ -32,14 +32,13 @@ def user_address_get():  # noqa: E501
 
     :rtype: InlineResponse200
     """
-    return {
-        "zip": "12345",
-        "number": 123,
-        "country": "USA",
-        "city": "Anytown",
-        "street": "Main St",
-        "state": "CA"
-    }
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], ["uuid"])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+    success = g.knowledge_client.execute()
+    if not success:
+        return abort(422, description="KB error")
+    return jsonify(success), 200
 
 
 def user_address_post(token_info, user_address_body=None):  # noqa: E501
@@ -69,18 +68,10 @@ def user_address_post(token_info, user_address_body=None):  # noqa: E501
         "subscriptions": None,
         "parent": digital_twin['digitalTwin'].properties[0].value
     }
-    # Note: Passing the request to the context is optional.
-    # In Flask, the current request is always accessible as flask.request
-    success, result = graphql_sync(
-        schema,
-        data,
-        context_value=request,
-        debug=app.debug
-    )
-
+    success = g.knowledge_client.execute()
     if not success:
         return abort(422, description="KB error")
-    return jsonify(result), 200
+    return jsonify(success), 200
 
 
 def invitation_get(invitation_id):  # noqa: E501
