@@ -56,3 +56,12 @@ jobs:
                   service: 'hackathon-${{ env.SERVICE }}'
                   image: 'gcr.io/${{ env.GCP_PROJECT_ID }}/hackathon/${{ env.SERVICE }}:${{ env.SHORT_SHA }}'
 
+
+            - name: Deploy to Google Cloud Run (demo env)
+              id: deploy-demo
+              uses: 'google-github-actions/deploy-cloudrun@v1'
+              with:
+                  region: '${{ env.GCP_REGION }}'
+                  service: 'hackathon-hockey-back-demo'
+                  image: 'gcr.io/${{ env.GCP_PROJECT_ID }}/hackathon/${{ env.SERVICE }}:${{ env.SHORT_SHA }}'
+
