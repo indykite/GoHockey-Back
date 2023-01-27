@@ -1,0 +1,16 @@
+"""
+Finding subscription only based on its own id
+{
+  "where": {
+    "externalId": "hfgqwdiugwef"
+  }
+}
+
+"""
+query HockeySubscription($where: HockeySubscriptionWhere) {
+  hockeySubscriptions(where: $where) {
+    valid_from
+    valid_to
+    externalId
+  }
+}
