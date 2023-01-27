@@ -1,3 +1,5 @@
+
+from gql import gql
 """
 Given a parent and sufficient 
 {
@@ -27,23 +29,25 @@ Given a parent and sufficient
 }
 """
 
-mutation CreateChildren($input: [ChildCreateInput!]!) {
-  createChildren(input: $input) {
-    children {
-      birthdate
-      cloth_size
-      externalId
-      gender
-      given_name
-      helmet_size
-      shoe_size
-      externalId
-      registered_by {
-        digitalTwinId
-      }
-      parents {
-        digitalTwinId
+add_child_mutation = gql(
+  """mutation CreateChildren($input: [ChildCreateInput!]!) {
+    createChildren(input: $input) {
+      children {
+        birthdate
+        cloth_size
+        externalId
+        gender
+        given_name
+        helmet_size
+        shoe_size
+        externalId
+        registered_by {
+          digitalTwinId
+        }
+        parents {
+          digitalTwinId
+        }
       }
     }
-  }
-}
+  }"""
+)
