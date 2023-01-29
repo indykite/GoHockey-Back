@@ -166,7 +166,7 @@ paths:
             schema:
               $ref: '#/components/schemas/invitation_create_body'
       responses:
-        "200":
+        "201":
           description: Successfully sent out the invitation
       security:
       - bearerAuth: []
@@ -233,20 +233,6 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.user_controller
       x-accepts: application/json
   /user/subscription:
-    get:
-      operationId: user_subscription_get
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_1'
-          description: Subscription of the logged in user
-      security:
-      - bearerAuth: []
-      summary: Get the subscription of the logged in user
-      x-openapi-router-controller: openapi_server.controllers.subscription_controller
-      x-accepts: application/json
     post:
       operationId: user_subscription_post
       requestBody:
@@ -263,9 +249,42 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.subscription_controller
       x-contentType: application/json
       x-accepts: application/json
+  /user/subscription/{subscription_id}:
+    get:
+      operationId: user_subscription_get
+      parameters:
+      - description: Id of the requested subscription
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: Subscription of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the subscription of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
+      x-accepts: application/json
   /user/subscriptions:
     get:
       operationId: user_subscriptions_get
+      parameters:
+      - description: external ID of the child to get all of their subscriptions
+        explode: true
+        in: query
+        name: child_id
+        required: true
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
