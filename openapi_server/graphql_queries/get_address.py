@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 {
   "where": {
@@ -6,15 +7,16 @@ from gql import gql
   }
 }
 """
-get_address_query= gql(
-  """query Address($where: AddressWhere) {
-    addresses(where: $where) {
-      zip
-      number
-      city
-      street
-      state
-      externalId
-    }
-  }"""
+get_address_query = gql(
+    """query Address($where: AddressWhere) {
+      addresses(where: $where) {
+        zip
+        number
+        city
+        street
+        state
+        country
+        externalId
+      }
+    }"""
 )

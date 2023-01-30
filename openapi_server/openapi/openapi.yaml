@@ -39,14 +39,11 @@ paths:
       x-accepts: application/json
     post:
       operationId: user_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/user_body'
       responses:
         "200":
           description: Successfully added user
+      security:
+      - bearerAuth: []
       summary: Add a user
       x-openapi-router-controller: openapi_server.controllers.user_controller
       x-contentType: application/json
@@ -54,6 +51,15 @@ paths:
   /user/address:
     get:
       operationId: user_address_get
+      parameters:
+      - description: Id of the address to get
+        explode: false
+        in: query
+        name: address_id
+        required: true
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -64,7 +70,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the home address of the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.address_controller
       x-accepts: application/json
     post:
       operationId: user_address_post
@@ -74,12 +80,12 @@ paths:
             schema:
               $ref: '#/components/schemas/user_address_body'
       responses:
-        "200":
+        "201":
           description: Successfully added home address to the logged in user
       security:
       - bearerAuth: []
       summary: Add a home address to the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.address_controller
       x-contentType: application/json
       x-accepts: application/json
   /user/child:
@@ -171,7 +177,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Create an invitation and sends out an email to the given email address
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-contentType: application/json
       x-accepts: application/json
   /user/invitation/{invitation_id}:
@@ -196,7 +202,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the invitation information with the given ID
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-accepts: application/json
   /user/invitations:
     get:
@@ -213,7 +219,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get all the invitations of the user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-accepts: application/json
   /user/parents:
     get:
@@ -364,29 +370,21 @@ components:
       title: invitation_create_body
     user_address_body:
       properties:
-        street:
-          example: Main St
+        address:
+          example: Main St 1
           title: street
           type: string
-        number:
-          example: 123
-          title: number
-          type: integer
         city:
-          example: Anytown
+          example: Big City
           title: city
-          type: string
-        state:
-          example: CA
-          title: state
-          type: string
-        zip:
-          example: "12345"
-          title: zip
           type: string
         country:
           example: USA
           title: country
+          type: string
+        zip:
+          example: "12345"
+          title: zip
           type: string
       title: user_address_body
       type: object
@@ -420,12 +418,11 @@ components:
       type: object
     inline_response_200:
       example:
+        id: 11111111-41111111-81111111-111111111111
         zip: "12345"
-        number: 123
         country: USA
-        city: Anytown
-        street: Main St
-        state: CA
+        city: Big City
+        address: Main Street 1
       properties:
         street:
           example: Main St

@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 Finding subscription only based on its own id
 {
@@ -9,11 +10,11 @@ Finding subscription only based on its own id
 
 """
 get_subscription_query = gql(
-  """query HockeySubscription($where: HockeySubscriptionWhere) {
-    hockeySubscriptions(where: $where) {
-      valid_from
-      valid_to
-      externalId
-    }
-  }"""
+    """query HockeySubscription($where: HockeySubscriptionWhere) {
+      hockeySubscriptions(where: $where) {
+        valid_from
+        valid_to
+        externalId
+      }
+    }"""
 )
