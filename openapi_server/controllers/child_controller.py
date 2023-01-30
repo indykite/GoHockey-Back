@@ -52,7 +52,7 @@ def user_child_child_id_get(token_info, child_id):  # noqa: E501
     return child
 
 
-def user_child_post(token_info, user_child_body=None):  # noqa: E501
+def user_child_post(token_info):  # noqa: E501
     """Add a child to the logged in user
 
      # noqa: E501
@@ -67,7 +67,7 @@ def user_child_post(token_info, user_child_body=None):  # noqa: E501
     digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
     if digital_twin is None:
         return abort(404, description="Resource not found")
-    params = Merge(body,{
+    params = {**body,**{
         "externalId": uuid(),
         "registered_by": {
             "connect": {
@@ -83,6 +83,6 @@ def user_child_post(token_info, user_child_body=None):  # noqa: E501
                 }
             }
         }
-    })
+    }}
     child = g.indykite_graph_client.execute(add_child_mutation, params)
     return child
