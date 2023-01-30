@@ -38,7 +38,6 @@ def user_child_child_id_get(token_info, child_id):  # noqa: E501
     :rtype: UserChildBody
     """
     digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
-    print(digital_twin['digitalTwin'].id)
     if digital_twin is None:
         return abort(404, description="Resource not found")
     get_child_params = {
