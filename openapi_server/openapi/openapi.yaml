@@ -70,7 +70,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the home address of the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.address_controller
       x-accepts: application/json
     post:
       operationId: user_address_post
@@ -85,7 +85,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Add a home address to the logged in user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.address_controller
       x-contentType: application/json
       x-accepts: application/json
   /user/child:
@@ -177,7 +177,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Create an invitation and sends out an email to the given email address
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-contentType: application/json
       x-accepts: application/json
   /user/invitation/{invitation_id}:
@@ -202,7 +202,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the invitation information with the given ID
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-accepts: application/json
   /user/invitations:
     get:
@@ -219,7 +219,7 @@ paths:
       security:
       - bearerAuth: []
       summary: Get all the invitations of the user
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-accepts: application/json
   /user/parents:
     get:
