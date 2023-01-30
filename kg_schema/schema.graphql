@@ -5,7 +5,7 @@ type Child implements Resource {
     cloth_size: Int!
     helmet_size: Int!
     shoe_size: Int!
-    birthdate: String!
+    year_of_birth: Int!
     given_name: String!
     gender: String!
     externalId: String!
