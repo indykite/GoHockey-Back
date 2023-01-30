@@ -1,6 +1,7 @@
 import connexion
 from openapi_server.models.user_child_body import UserChildBody  # noqa: E501
 from openapi_server.graphql_queries.get_child import get_child_query
+from openapi_server.graphql_queries.get_children import get_children_query
 from flask import abort, g
 
 
@@ -9,24 +10,18 @@ def user_children_get(token_info):
 
      # noqa: E501
     """
-    return [
-        {
-            "shoe_size": 36,
-            "gender": "male",
-            "cloth_size": 122,
-            "helmet_size": 52,
-            "given_name": "John",
-            "year_of_birth": 2010
-        },
-        {
-            "shoe_size": 37,
-            "gender": "female",
-            "cloth_size": 122,
-            "helmet_size": 52,
-            "given_name": "Jane",
-            "year_of_birth": 2009
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+    get_children_params = {
+        "where": {
+            "parents_SOME": {
+                "externalId": digital_twin['digitalTwin'].id
+            },
         }
-    ]
+    }
+    children = g.indykite_graph_client.execute(get_children_query, get_children_params)
+    return children
 
 
 def user_child_child_id_get(token_info, child_id):  # noqa: E501
@@ -46,7 +41,7 @@ def user_child_child_id_get(token_info, child_id):  # noqa: E501
     get_child_params = {
         "where": {
             "parents_SOME": {
-                "digitalTwinId": digital_twin['digitalTwin'].id
+                "externalId": digital_twin['digitalTwin'].id
             },
             "externalId": child_id
         }
