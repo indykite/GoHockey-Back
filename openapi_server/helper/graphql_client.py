@@ -15,11 +15,14 @@ class KnowledgeGraphqlClient:
         self.client = None
 
     def set_authorization(self, token):
+        token = os.getenv('KNOWLEDGE_GRAPH_WORKAROUND_TOKEN')
+        if not self.addr:
+            abort(503, "Missing KNOWLEDGE_GRAPH_WORKAROUND_TOKEN environment variable")
         self.transport = RequestsHTTPTransport(
             url=self.addr,
             verify=True,
             retries=3,
-            headers={"Authorization": os.getenv('TMP_TOKEN')},
+            headers={"Authorization": token},
         )
         # Create a GraphQL client using the defined transport
         self.client = Client(transport=self.transport, fetch_schema_from_transport=True)
