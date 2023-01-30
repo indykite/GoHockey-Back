@@ -19,7 +19,7 @@ get_child_query = gql(
       cloth_size
       helmet_size
       shoe_size
-      birthdate
+      year_of_birth
       given_name
       gender
       externalId
