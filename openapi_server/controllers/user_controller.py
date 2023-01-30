@@ -1,5 +1,5 @@
 from flask import abort, g
-import uuid
+
 from openapi_server.graphql_queries.add_parent import add_parent_mutation
 
 
@@ -11,7 +11,8 @@ def user_post(token_info):  # noqa: E501
 
     :rtype: str
     """
-    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], ["email", "givenname", "familyname"])
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'],
+                                                               ["email", "givenname", "familyname"])
     if digital_twin is None:
         return abort(404, description="Resource not found")
     add_parent_params = {
@@ -37,9 +38,13 @@ def user_get(token_info):  # noqa: E501
 
     :rtype: str
     """
+    dt = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'],
+                                                     ["email", "givenname", "familyname"])
+    if dt is None:
+        return abort(404, description="Resource not found")
     return {
-        "name": "John Doe",
-        "email": "john.doe@indykite.com"
+        "name": dt['digitalTwin'].properties[0].value,
+        "email": dt['digitalTwin'].properties[1].value + " " + dt['digitalTwin'].properties[2].value,
     }
 
 
