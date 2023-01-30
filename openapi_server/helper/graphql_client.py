@@ -1,7 +1,7 @@
 import os
 
 from flask import abort
-from gql import gql, Client
+from gql import Client
 from gql.transport.requests import RequestsHTTPTransport
 
 

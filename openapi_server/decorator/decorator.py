@@ -1,5 +1,5 @@
-from indykite_sdk.identity import IdentityClient
 from flask import g, abort
+from indykite_sdk.identity import IdentityClient
 
 from openapi_server.helper.graphql_client import KnowledgeGraphqlClient
 
