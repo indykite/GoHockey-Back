@@ -10,7 +10,7 @@ Given a parent and sufficient
     "externalId": "123213212", // I think we'll need to generate this, maybe a UUID
     "given_name": "Sprinkles",
     "shoe_size": 10,
-    "birthdate": "2020/12/12",
+    "year_of_birth": "2020",
     "registered_by": {
       "connect": {
         "where": {
@@ -33,7 +33,7 @@ add_child_mutation = gql(
   """mutation CreateChildren($input: [ChildCreateInput!]!) {
     createChildren(input: $input) {
       children {
-        birthdate
+        year_of_birth
         cloth_size
         externalId
         gender
