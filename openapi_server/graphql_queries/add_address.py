@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 {
   "input": {

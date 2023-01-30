@@ -13,15 +13,15 @@ def user_address_get(address_id):
      # noqa: E501
     """
     get_address_params = {
-      "where": {
-        "externalId": address_id
-      }
+        "where": {
+            "externalId": address_id
+        }
     }
 
-    address = g.indykite_graph_client.execute(get_address_query, get_address_params)
-    if not address:
-      return abort(422, description="KB error, failed to get the address")
-    return jsonify(address), 200
+    adr = g.indykite_graph_client.execute(get_address_query, get_address_params)
+    if not adr:
+        return abort(422, description="KB error, failed to get the address")
+    return jsonify(adr), 200
 
 
 def user_address_post(token_info, user_address_body=None):  # noqa: E501
