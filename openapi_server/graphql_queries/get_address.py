@@ -10,7 +10,6 @@ get_address_query= gql(
   """query Address($where: AddressWhere) {
     addresses(where: $where) {
       zip
-      number
       city
       street
       state

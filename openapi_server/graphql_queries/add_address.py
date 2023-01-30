@@ -3,7 +3,6 @@ from gql import gql
 {
   "input": {
     "zip": "12345",
-    "number": 123,
     "city": "Anytown",
     "street": "Main St",
     "country": "USA",
@@ -24,7 +23,6 @@ add_address_mutation = gql(
       createAddresses(input: $input){
           addresses{
               zip
-              number
               city
               street
               state
