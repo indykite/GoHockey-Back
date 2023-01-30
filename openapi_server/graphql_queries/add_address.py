@@ -35,6 +35,7 @@ add_address_mutation = gql(
               city
               street
               state
+              country
               externalId
               subscriptions{
                   externalId

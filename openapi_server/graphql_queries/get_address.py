@@ -14,6 +14,7 @@ get_address_query= gql(
       city
       street
       state
+      country
       externalId
     }
   }"""
