@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import connexion
-from openapi_server.decorator.decorator import before_request_callback, after_request_callback
+
 from openapi_server import encoder
+from openapi_server.decorator.decorator import before_request_callback, after_request_callback
 
 
 def main():

@@ -1,10 +1,12 @@
+from uuid import uuid4 as uuid
+
 import connexion
-from openapi_server.models.user_child_body import UserChildBody  # noqa: E501
+from flask import abort, g
+
+from openapi_server.graphql_queries.add_child import add_child_mutation
 from openapi_server.graphql_queries.get_child import get_child_query
 from openapi_server.graphql_queries.get_children import get_children_query
-from openapi_server.graphql_queries.add_child import add_child_mutation
-from flask import abort, g
-from uuid import uuid4 as uuid
+from openapi_server.models.user_child_body import UserChildBody  # noqa: E501
 
 
 def user_children_get(token_info):
@@ -67,19 +69,19 @@ def user_child_post(token_info):  # noqa: E501
     digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
     if digital_twin is None:
         return abort(404, description="Resource not found")
-    params = {**body.to_dict(),**{
+    params = {**body.to_dict(), **{
         "externalId": str(uuid()),
         "registered_by": {
             "connect": {
                 "where": {
-                "node": {"externalId": digital_twin['digitalTwin'].id}
+                    "node": {"externalId": digital_twin['digitalTwin'].id}
                 }
             }
         },
         "parents": {
             "connect": {
                 "where": {
-                "node": {"externalId": digital_twin['digitalTwin'].id}
+                    "node": {"externalId": digital_twin['digitalTwin'].id}
                 }
             }
         }

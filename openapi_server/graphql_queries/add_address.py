@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 {
   "input": {
@@ -20,20 +21,20 @@ from gql import gql
 
 """
 add_address_mutation = gql(
-  """mutation CreateAddress($input: [AddressCreateInput!]!){
-      createAddresses(input: $input){
-          addresses{
-              zip
-              number
-              city
-              street
-              state
-              country
-              externalId
-              receivers{
-                  digitalTwinId
-              }
-          }
-      }
-  }"""
+    """mutation CreateAddress($input: [AddressCreateInput!]!){
+        createAddresses(input: $input){
+            addresses{
+                zip
+                number
+                city
+                street
+                state
+                country
+                externalId
+                receivers{
+                    digitalTwinId
+                }
+            }
+        }
+    }"""
 )

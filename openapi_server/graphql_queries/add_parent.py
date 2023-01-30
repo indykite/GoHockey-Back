@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 {
   "input": {
@@ -14,18 +15,18 @@ from gql import gql
 """
 
 add_parent_mutation = gql(
-  """mutation CreateParents($input: [ParentCreateInput!]!) {
-    createParents(input: $input) {
-      parents {
-        email
-        externalId
-        givenname
-        kind
-        lastname
-        digitalTwinId
-        tenantId
-        tags
+    """mutation CreateParents($input: [ParentCreateInput!]!) {
+      createParents(input: $input) {
+        parents {
+          email
+          externalId
+          givenname
+          kind
+          lastname
+          digitalTwinId
+          tenantId
+          tags
+        }
       }
-    }
-  }"""
+    }"""
 )

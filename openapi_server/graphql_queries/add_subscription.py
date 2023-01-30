@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 {
   "input": {
@@ -24,19 +25,19 @@ from gql import gql
 
 """
 add_subscription_mutation = gql(
-  """mutation CreateHockeySubscription($input: [HockeySubscriptionCreateInput!]!) {
-    createHockeySubscriptions(input: $input) {
-        hockeySubscriptions{
-          valid_from
-          valid_to
-          externalId
-          child {
+    """mutation CreateHockeySubscription($input: [HockeySubscriptionCreateInput!]!) {
+      createHockeySubscriptions(input: $input) {
+          hockeySubscriptions{
+            valid_from
+            valid_to
             externalId
-          }
-          delivers_to {
-            externalId
+            child {
+              externalId
+            }
+            delivers_to {
+              externalId
+            }
           }
         }
-      }
-    }"""
+      }"""
 )

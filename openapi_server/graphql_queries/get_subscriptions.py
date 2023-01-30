@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 Finding subscriptions based on childs externalId
 {
@@ -10,11 +11,11 @@ Finding subscriptions based on childs externalId
 }
 """
 get_subscriptions_query = gql(
-  """query HockeySubscription($where: HockeySubscriptionWhere) {
-    hockeySubscriptions(where: $where) {
-      valid_from
-      valid_to
-      externalId
-    }
-  }"""
+    """query HockeySubscription($where: HockeySubscriptionWhere) {
+      hockeySubscriptions(where: $where) {
+        valid_from
+        valid_to
+        externalId
+      }
+    }"""
 )
