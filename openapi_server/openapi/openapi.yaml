@@ -51,6 +51,15 @@ paths:
   /user/address:
     get:
       operationId: user_address_get
+      parameters:
+      - description: Id of the address to get
+        explode: false
+        in: query
+        name: address_id
+        required: true
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -71,7 +80,7 @@ paths:
             schema:
               $ref: '#/components/schemas/user_address_body'
       responses:
-        "200":
+        "201":
           description: Successfully added home address to the logged in user
       security:
       - bearerAuth: []
@@ -342,29 +351,21 @@ components:
       title: invitation_create_body
     user_address_body:
       properties:
-        street:
-          example: Main St
+        address:
+          example: Main St 1
           title: street
           type: string
-        number:
-          example: 123
-          title: number
-          type: integer
         city:
-          example: Anytown
+          example: Big City
           title: city
-          type: string
-        state:
-          example: CA
-          title: state
-          type: string
-        zip:
-          example: "12345"
-          title: zip
           type: string
         country:
           example: USA
           title: country
+          type: string
+        zip:
+          example: "12345"
+          title: zip
           type: string
       title: user_address_body
       type: object
@@ -398,12 +399,11 @@ components:
       type: object
     inline_response_200:
       example:
+        id: 11111111-41111111-81111111-111111111111
         zip: "12345"
-        number: 123
         country: USA
-        city: Anytown
-        street: Main St
-        state: CA
+        city: Big City
+        address: Main Street 1
       properties:
         street:
           example: Main St

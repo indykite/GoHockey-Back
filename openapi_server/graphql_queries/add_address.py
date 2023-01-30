@@ -6,15 +6,8 @@ from gql import gql
     "number": 123,
     "city": "Anytown",
     "street": "Main St",
-    "state": "CA",
+    "country": "USA",
     "externalId": "1453851837",
-    "subscriptions":{
-      "connect": {
-        "where": { 
-          "node": {"externalId":"hfgqwdiugwef"}
-        }
-      }
-    },
     "receivers":{
       "connect": {
         "where": { 
@@ -37,9 +30,6 @@ add_address_mutation = gql(
               state
               country
               externalId
-              subscriptions{
-                  externalId
-              }
               receivers{
                   digitalTwinId
               }
