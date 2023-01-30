@@ -1,4 +1,3 @@
-
 type Child implements Resource {
     subscriptions: [HockeySubscription!]! @relationship(type: "HAS_SUBSCRIPTION", direction: OUT)
     registered_by: Parent! @relationship(type: "REGISTERED", direction: IN)
@@ -23,10 +22,10 @@ type HockeySubscription implements Resource {
 type Parent implements DigitalTwin {
     parent_of: [Child!]! @relationship(type: "PARENT_OF", direction: OUT)
     registered: [Child!]! @relationship(type: "REGISTERED", direction: OUT)
-    address: Address! @relationship(type: "RECEIVES_AT", direction: OUT)
-    email: IdentityProperty @identityProperty
-    givenname: IdentityProperty @identityProperty
-    lastname: IdentityProperty @identityProperty
+    address: Address @relationship(type: "RECEIVES_AT", direction: OUT)
+    email: String!
+    givenname: String!
+    lastname: String!
     externalId: String!
     digitalTwinId: String!
     tenantId: String! @readonly
@@ -38,9 +37,10 @@ type Address implements Resource {
     subscriptions: [HockeySubscription!]! @relationship(type: "DELIVERS_TO", direction: IN)
     receivers: [Parent!]! @relationship(type: "RECEIVES_AT", direction: IN)
     zip: String!
-    street: String!
     number: Int!
     city: String!
-    country: String!
+    street: String!
+    state: String!
     externalId: String!
+    country: String!
 }
