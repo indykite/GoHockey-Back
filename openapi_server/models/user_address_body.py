@@ -15,46 +15,36 @@ class UserAddressBody(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, street=None, number=None, city=None, state=None, zip=None, country=None):  # noqa: E501
+    def __init__(self, address=None, city=None, country=None, zip=None):  # noqa: E501
         """UserAddressBody - a model defined in OpenAPI
 
-        :param street: The street of this UserAddressBody.  # noqa: E501
-        :type street: str
-        :param number: The number of this UserAddressBody.  # noqa: E501
-        :type number: int
+        :param address: The address of this UserAddressBody.  # noqa: E501
+        :type address: str
         :param city: The city of this UserAddressBody.  # noqa: E501
         :type city: str
-        :param state: The state of this UserAddressBody.  # noqa: E501
-        :type state: str
-        :param zip: The zip of this UserAddressBody.  # noqa: E501
-        :type zip: str
         :param country: The country of this UserAddressBody.  # noqa: E501
         :type country: str
+        :param zip: The zip of this UserAddressBody.  # noqa: E501
+        :type zip: str
         """
         self.openapi_types = {
-            'street': str,
-            'number': int,
+            'address': str,
             'city': str,
-            'state': str,
-            'zip': str,
-            'country': str
+            'country': str,
+            'zip': str
         }
 
         self.attribute_map = {
-            'street': 'street',
-            'number': 'number',
+            'address': 'address',
             'city': 'city',
-            'state': 'state',
-            'zip': 'zip',
-            'country': 'country'
+            'country': 'country',
+            'zip': 'zip'
         }
 
-        self._street = street
-        self._number = number
+        self._address = address
         self._city = city
-        self._state = state
-        self._zip = zip
         self._country = country
+        self._zip = zip
 
     @classmethod
     def from_dict(cls, dikt) -> 'UserAddressBody':
@@ -68,46 +58,25 @@ class UserAddressBody(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def street(self):
-        """Gets the street of this UserAddressBody.
+    def address(self):
+        """Gets the address of this UserAddressBody.
 
 
-        :return: The street of this UserAddressBody.
+        :return: The address of this UserAddressBody.
         :rtype: str
         """
-        return self._street
+        return self._address
 
-    @street.setter
-    def street(self, street):
-        """Sets the street of this UserAddressBody.
+    @address.setter
+    def address(self, address):
+        """Sets the address of this UserAddressBody.
 
 
-        :param street: The street of this UserAddressBody.
-        :type street: str
+        :param address: The address of this UserAddressBody.
+        :type address: str
         """
 
-        self._street = street
-
-    @property
-    def number(self):
-        """Gets the number of this UserAddressBody.
-
-
-        :return: The number of this UserAddressBody.
-        :rtype: int
-        """
-        return self._number
-
-    @number.setter
-    def number(self, number):
-        """Sets the number of this UserAddressBody.
-
-
-        :param number: The number of this UserAddressBody.
-        :type number: int
-        """
-
-        self._number = number
+        self._address = address
 
     @property
     def city(self):
@@ -131,25 +100,25 @@ class UserAddressBody(Model):
         self._city = city
 
     @property
-    def state(self):
-        """Gets the state of this UserAddressBody.
+    def country(self):
+        """Gets the country of this UserAddressBody.
 
 
-        :return: The state of this UserAddressBody.
+        :return: The country of this UserAddressBody.
         :rtype: str
         """
-        return self._state
+        return self._country
 
-    @state.setter
-    def state(self, state):
-        """Sets the state of this UserAddressBody.
+    @country.setter
+    def country(self, country):
+        """Sets the country of this UserAddressBody.
 
 
-        :param state: The state of this UserAddressBody.
-        :type state: str
+        :param country: The country of this UserAddressBody.
+        :type country: str
         """
 
-        self._state = state
+        self._country = country
 
     @property
     def zip(self):
@@ -171,24 +140,3 @@ class UserAddressBody(Model):
         """
 
         self._zip = zip
-
-    @property
-    def country(self):
-        """Gets the country of this UserAddressBody.
-
-
-        :return: The country of this UserAddressBody.
-        :rtype: str
-        """
-        return self._country
-
-    @country.setter
-    def country(self, country):
-        """Sets the country of this UserAddressBody.
-
-
-        :param country: The country of this UserAddressBody.
-        :type country: str
-        """
-
-        self._country = country
