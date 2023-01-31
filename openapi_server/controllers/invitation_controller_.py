@@ -1,4 +1,6 @@
+import connexion
 import uuid
+from retrying import retry, RetryError
 
 import connexion
 from flask import g, jsonify, abort
@@ -9,6 +11,8 @@ from retrying import retry, RetryError
 import openapi_server.controllers.security_controller_ as sec
 from openapi_server.helper import format_helper, response_processor, patch_calls as patch
 from openapi_server.models import InvitationCreateBody
+
+from flask import g, jsonify, abort
 
 
 def retry_if_reference_id_is_none(response):
@@ -73,7 +77,7 @@ def invitations_get(token_info):
     invitation_information = []
     info = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], ["nnin"])
     if not info:
-        return abort(422, description="Failed to get nnin from user")
+      return abort(422, description="Failed to get nnin from user")
     else:
         try:
             ids = response_processor.get_all_reference_id_from_get_digital_twin_response(info)
