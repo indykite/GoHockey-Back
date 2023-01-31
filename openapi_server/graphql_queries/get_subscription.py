@@ -4,7 +4,7 @@ from gql import gql
 Finding subscription only based on its own id
 {
   "where": {
-    "externalId": "hfgqwdiugwef"
+    "externalId": "c42c7722-45b2-4787-8fba-69627b088980"
   }
 }
 

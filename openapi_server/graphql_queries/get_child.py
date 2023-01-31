@@ -6,9 +6,9 @@ the childs attributes
 {
   "where": {
     "parents_SOME": {
-      "digitalTwinId": "1234567890"
+      "externalId": "gid:AAAdas23f456a78x90"
     },
-    "externalId": "123213212"
+    "externalId": "c42c7722-45b2-4787-8fba-69627b088980"
   }
 }
 """

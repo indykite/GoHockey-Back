@@ -5,18 +5,18 @@ from gql import gql
   "input": {
     "valid_from": "01.01.2023",
     "valid_to": "01.09.2023",
-    "externalId": "hfgqwdiugwef",
+    "externalId": "ccb990a7-c22e-4dc0-ad89-a9a8c3c0b82e",
     "child": {
       "connect": {
         "where": { 
-          "node": { "externalId": "123213212"}
+          "node": { "externalId": "c42c7722-45b2-4787-8fba-69627b088980"}
         }
       }
     },
      "delivers_to": {
       "connect": {
         "where": { 
-          "node": { "externalId": "fdghrshshs"}
+          "node": { "externalId": "ccb990a7-c22e-4dc0-ad89-a9a8c3c0b82e"}
         }
       }
     }
