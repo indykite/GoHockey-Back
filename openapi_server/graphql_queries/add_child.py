@@ -7,21 +7,21 @@ Given a parent and sufficient
     "cloth_size": 10,
     "helmet_size": 10,
     "gender": "M",
-    "externalId": "123213212", // I think we'll need to generate this, maybe a UUID
+    "externalId": "d3f20f9e-15d6-403a-b218-a0d9883bde23"
     "given_name": "Sprinkles",
     "shoe_size": 10,
-    "year_of_birth": "2020",
+    "year_of_birth": 2020,
     "registered_by": {
       "connect": {
         "where": {
-          "node": {"digitalTwinId": "1234567890"}
+          "node": {"externalId": "gid:23asda1a23fa294"}
         }
       }
     }
     "parents": {
       "connect": {
         "where": {
-          "node": {"digitalTwinId": "1234567890"}
+          "node": {"externalId": "gid:23asda1a23fa294"}
         }
       }
     }
@@ -35,17 +35,16 @@ add_child_mutation = gql(
         children {
           year_of_birth
           cloth_size
-          externalId
           gender
           given_name
           helmet_size
           shoe_size
           externalId
           registered_by {
-            digitalTwinId
+            externalId
           }
           parents {
-            digitalTwinId
+            externalId
           }
         }
       }
