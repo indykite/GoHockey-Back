@@ -4,7 +4,7 @@ Given a parents digitalTwinId, get all their children
 {
   "where": {
     "parents_SOME": {
-      "digitalTwinId": "1234567890"
+      "externalId": "gid:AAAdas23f456a78x90"
     }
   }
 }
@@ -15,7 +15,7 @@ get_children_query = gql(
       cloth_size
       helmet_size
       shoe_size
-      birthdate
+      year_of_birth
       given_name
       gender
       externalId

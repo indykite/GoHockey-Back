@@ -5,7 +5,7 @@ Finding subscriptions based on childs externalId
 {
   "where": {
     "child": {
-      "externalId": "123213212"
+      "externalId": "c42c7722-45b2-4787-8fba-69627b088980"
     }
   }
 }
