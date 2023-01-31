@@ -199,8 +199,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/invitation_information_body'
           description: Invitation information
-      security:
-      - bearerAuth: []
       summary: Get the invitation information with the given ID
       x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-accepts: application/json
@@ -467,19 +465,19 @@ components:
           example: John
           type: string
         year_of_birth:
-          example: 2010
+          example: "2010"
           type: string
         gender:
           example: male
           type: string
         cloth_size:
-          example: 122
+          example: "122"
           type: string
         shoe_size:
-          example: 36
+          example: "36"
           type: string
         helmet_size:
-          example: 52
+          example: "52"
           type: string
       title: user_child_body
       type: object

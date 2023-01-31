@@ -21,23 +21,23 @@ class UserChildBody(Model):
         :param given_name: The given_name of this UserChildBody.  # noqa: E501
         :type given_name: str
         :param year_of_birth: The year_of_birth of this UserChildBody.  # noqa: E501
-        :type year_of_birth: int
+        :type year_of_birth: str
         :param gender: The gender of this UserChildBody.  # noqa: E501
         :type gender: str
         :param cloth_size: The cloth_size of this UserChildBody.  # noqa: E501
-        :type cloth_size: int
+        :type cloth_size: str
         :param shoe_size: The shoe_size of this UserChildBody.  # noqa: E501
-        :type shoe_size: int
+        :type shoe_size: str
         :param helmet_size: The helmet_size of this UserChildBody.  # noqa: E501
-        :type helmet_size: int
+        :type helmet_size: str
         """
         self.openapi_types = {
             'given_name': str,
-            'year_of_birth': int,
+            'year_of_birth': str,
             'gender': str,
-            'cloth_size': int,
-            'shoe_size': int,
-            'helmet_size': int
+            'cloth_size': str,
+            'shoe_size': str,
+            'helmet_size': str
         }
 
         self.attribute_map = {
@@ -94,7 +94,7 @@ class UserChildBody(Model):
 
 
         :return: The year_of_birth of this UserChildBody.
-        :rtype: int
+        :rtype: str
         """
         return self._year_of_birth
 
@@ -104,7 +104,7 @@ class UserChildBody(Model):
 
 
         :param year_of_birth: The year_of_birth of this UserChildBody.
-        :type year_of_birth: int
+        :type year_of_birth: str
         """
 
         self._year_of_birth = year_of_birth
@@ -136,7 +136,7 @@ class UserChildBody(Model):
 
 
         :return: The cloth_size of this UserChildBody.
-        :rtype: int
+        :rtype: str
         """
         return self._cloth_size
 
@@ -146,7 +146,7 @@ class UserChildBody(Model):
 
 
         :param cloth_size: The cloth_size of this UserChildBody.
-        :type cloth_size: int
+        :type cloth_size: str
         """
 
         self._cloth_size = cloth_size
@@ -157,7 +157,7 @@ class UserChildBody(Model):
 
 
         :return: The shoe_size of this UserChildBody.
-        :rtype: int
+        :rtype: str
         """
         return self._shoe_size
 
@@ -167,7 +167,7 @@ class UserChildBody(Model):
 
 
         :param shoe_size: The shoe_size of this UserChildBody.
-        :type shoe_size: int
+        :type shoe_size: str
         """
 
         self._shoe_size = shoe_size
@@ -178,7 +178,7 @@ class UserChildBody(Model):
 
 
         :return: The helmet_size of this UserChildBody.
-        :rtype: int
+        :rtype: str
         """
         return self._helmet_size
 
@@ -188,7 +188,7 @@ class UserChildBody(Model):
 
 
         :param helmet_size: The helmet_size of this UserChildBody.
-        :type helmet_size: int
+        :type helmet_size: str
         """
 
         self._helmet_size = helmet_size
