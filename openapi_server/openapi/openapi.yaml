@@ -199,8 +199,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/invitation_information_body'
           description: Invitation information
-      security:
-      - bearerAuth: []
       summary: Get the invitation information with the given ID
       x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-accepts: application/json
@@ -259,7 +257,7 @@ paths:
     get:
       operationId: user_subscription_get
       parameters:
-      - description: Id of the requested subscription
+      - description: Id of the subscription
         explode: false
         in: path
         name: subscription_id
@@ -277,6 +275,33 @@ paths:
       security:
       - bearerAuth: []
       summary: Get the subscription of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    patch:
+      operationId: user_subscription_patch
+      parameters:
+      - description: Id of the subscription
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Subscriptions end date
+              example: 2020-12-31
+              format: date
+              title: to
+              type: object
+      responses:
+        "200":
+          description: Subscriptions end date set
+      security:
+      - bearerAuth: []
+      summary: Set the subscription end date
       x-openapi-router-controller: openapi_server.controllers.subscription_controller
       x-accepts: application/json
   /user/subscriptions:
@@ -457,24 +482,20 @@ components:
           example: John
           type: string
         year_of_birth:
-          example: 2010
-          format: int32
-          type: integer
+          example: "2010"
+          type: string
         gender:
           example: male
           type: string
         cloth_size:
-          example: 122
-          format: int32
-          type: integer
+          example: "122"
+          type: string
         shoe_size:
-          example: 36
-          format: int32
-          type: integer
+          example: "36"
+          type: string
         helmet_size:
-          example: 52
-          format: int32
-          type: integer
+          example: "52"
+          type: string
       title: user_child_body
       type: object
     user_subscription_body:

@@ -69,7 +69,7 @@ def user_child_post(token_info):  # noqa: E501
     digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
     if digital_twin is None:
         return abort(404, description="Resource not found")
-    params = {**body.to_dict(), **{
+    params = {
         "externalId": str(uuid()),
         "registered_by": {
             "connect": {
@@ -84,7 +84,13 @@ def user_child_post(token_info):  # noqa: E501
                     "node": {"externalId": digital_twin['digitalTwin'].id}
                 }
             }
-        }
-    }}
+        },
+        "helmet_size": int(body.helmet_size),
+        "shoe_size":  int(body.shoe_size),
+        "cloth_size": int(body.cloth_size),
+        "year_of_birth": int(body.year_of_birth),
+        "gender": body.gender,
+        "given_name": body.given_name   
+    }
     child = g.indykite_graph_client.execute(add_child_mutation, {"input": params})
     return child

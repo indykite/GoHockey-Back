@@ -2,11 +2,11 @@ import connexion
 import datetime
 import uuid
 
+from openapi_server.graphql_queries.patch_subscription import patch_subscription_mutation
 from openapi_server.models.inline_response2001 import InlineResponse2001  # noqa: E501
 from openapi_server.models.user_subscription_body import UserSubscriptionBody  # noqa: E501
 from openapi_server.graphql_queries.get_subscription import get_subscription_query
 from openapi_server.graphql_queries.add_subscription import add_subscription_mutation
-from openapi_server.controllers.address_controller import user_address_get
 from flask import abort, g, jsonify
 
 
@@ -14,6 +14,8 @@ def user_subscriptions_get(child_id):  # noqa: E501
     """Get the subscriptions of the logged in user
 
      # noqa: E501
+
+    :rtype: None
     """
     get_subscription_param = {
           "where": {
@@ -85,3 +87,31 @@ def user_subscription_post(token_info, user_subscription_body=None):  # noqa: E5
     }
     subscription = g.indykite_graph_client.execute(add_subscription_mutation, post_subscription_param)
     return jsonify(subscription)
+
+
+def user_subscription_patch(token_info, subscription_id):  # noqa: E501
+    """Update the subscription of the logged in user
+
+     # noqa: E501
+
+    :param token_info:
+    :param subscription_id: Id of the subscription to update
+    :type subscription_id: str
+
+    :rtype: None
+    """
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+    if connexion.request.is_json:
+        data = UserSubscriptionBody.from_dict(connexion.request.get_json())
+    patch_subscription_params = {
+        "where": {
+            "externalId": subscription_id
+        },
+        "update": {
+            "valid_to": data.to
+        }
+    }
+    child = g.indykite_graph_client.execute(patch_subscription_mutation, patch_subscription_params)
+    return child
