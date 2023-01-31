@@ -6,6 +6,7 @@ from gql import gql
     "valid_from": "01.01.2023",
     "valid_to": "01.09.2023",
     "externalId": "ccb990a7-c22e-4dc0-ad89-a9a8c3c0b82e",
+    "sku": ["SKU001"],
     "child": {
       "connect": {
         "where": { 
@@ -13,7 +14,7 @@ from gql import gql
         }
       }
     },
-     "delivers_to": {
+     "parent": {
       "connect": {
         "where": { 
           "node": { "externalId": "ccb990a7-c22e-4dc0-ad89-a9a8c3c0b82e"}
@@ -31,10 +32,11 @@ add_subscription_mutation = gql(
             valid_from
             valid_to
             externalId
+            sku
             child {
               externalId
             }
-            delivers_to {
+            parent {
               externalId
             }
           }

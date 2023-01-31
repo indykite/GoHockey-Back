@@ -479,12 +479,12 @@ components:
       type: object
     user_subscription_body:
       properties:
-        from:
+        valid_from:
           example: 2022-01-01T00:00:00Z
           format: date-time
           title: from
           type: string
-        to:
+        valid_to:
           example: 2022-12-31T23:59:59Z
           format: date-time
           title: to

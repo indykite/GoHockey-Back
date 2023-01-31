@@ -16,6 +16,13 @@ get_subscriptions_query = gql(
         valid_from
         valid_to
         externalId
+        sku
+        child {
+          externalId
+        }
+        parent {
+          externalId
+        }
       }
     }"""
 )
