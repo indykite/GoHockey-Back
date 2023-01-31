@@ -93,6 +93,10 @@ def user_child_post(token_info):  # noqa: E501
 
      # noqa: E501
 
+    :param token_info:
+    :param user_child_body:
+    :type user_child_body: dict | bytes
+
     :rtype: None
     """
     if connexion.request.is_json:
