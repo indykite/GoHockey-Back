@@ -439,23 +439,19 @@ components:
           type: string
         year_of_birth:
           example: 2010
-          format: int32
-          type: integer
+          type: string
         gender:
           example: male
           type: string
         cloth_size:
           example: 122
-          format: int32
-          type: integer
+          type: string
         shoe_size:
           example: 36
-          format: int32
-          type: integer
+          type: string
         helmet_size:
           example: 52
-          format: int32
-          type: integer
+          type: string
       title: user_child_body
       type: object
     user_subscription_body:
