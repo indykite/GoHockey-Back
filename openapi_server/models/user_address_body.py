@@ -15,11 +15,11 @@ class UserAddressBody(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, address=None, city=None, country=None, zip=None):  # noqa: E501
+    def __init__(self, street=None, city=None, country=None, zip=None):  # noqa: E501
         """UserAddressBody - a model defined in OpenAPI
 
-        :param address: The address of this UserAddressBody.  # noqa: E501
-        :type address: str
+        :param street: The street of this UserAddressBody.  # noqa: E501
+        :type street: str
         :param city: The city of this UserAddressBody.  # noqa: E501
         :type city: str
         :param country: The country of this UserAddressBody.  # noqa: E501
@@ -28,20 +28,20 @@ class UserAddressBody(Model):
         :type zip: str
         """
         self.openapi_types = {
-            'address': str,
+            'street': str,
             'city': str,
             'country': str,
             'zip': str
         }
 
         self.attribute_map = {
-            'address': 'address',
+            'street': 'street',
             'city': 'city',
             'country': 'country',
             'zip': 'zip'
         }
 
-        self._address = address
+        self._street = street
         self._city = city
         self._country = country
         self._zip = zip
@@ -58,25 +58,25 @@ class UserAddressBody(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def address(self):
-        """Gets the address of this UserAddressBody.
+    def street(self):
+        """Gets the street of this UserAddressBody.
 
 
-        :return: The address of this UserAddressBody.
+        :return: The street of this UserAddressBody.
         :rtype: str
         """
-        return self._address
+        return self._street
 
-    @address.setter
-    def address(self, address):
-        """Sets the address of this UserAddressBody.
+    @street.setter
+    def street(self, street):
+        """Sets the street of this UserAddressBody.
 
 
-        :param address: The address of this UserAddressBody.
-        :type address: str
+        :param street: The street of this UserAddressBody.
+        :type street: str
         """
 
-        self._address = address
+        self._street = street
 
     @property
     def city(self):
