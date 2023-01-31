@@ -269,6 +269,35 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.subscription_controller
       x-contentType: application/json
       x-accepts: application/json
+  /user/subscription/{subscription_id}:
+    patch:
+      operationId: user_subscription_patch
+      parameters:
+      - description: Id of the subscription
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Subscriptions end date
+              example: 2020-12-31
+              format: date
+              title: to
+              type: object
+      responses:
+        "200":
+          description: Subscriptions end date set
+      security:
+      - bearerAuth: []
+      summary: Set the subscription end date
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
+      x-accepts: application/json
   /user/subscriptions:
     get:
       operationId: user_subscriptions_get
