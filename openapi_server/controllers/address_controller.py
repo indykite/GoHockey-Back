@@ -18,10 +18,10 @@ def user_address_get(address_id):
         }
     }
 
-    adr = g.indykite_graph_client.execute(get_address_query, get_address_params)
-    if not adr:
+    address = g.indykite_graph_client.execute(get_address_query, get_address_params)
+    if not address:
         return abort(422, description="KB error, failed to get the address")
-    return jsonify(adr), 200
+    return jsonify(address), 200
 
 
 def user_address_post(token_info, user_address_body=None):  # noqa: E501
@@ -56,7 +56,6 @@ def user_address_post(token_info, user_address_body=None):  # noqa: E501
       }
     }
     address = g.indykite_graph_client.execute(add_address_mutation, post_address_params)
-    print(address)
     if not address:
         return abort(422, description="KB error, failed to create the address")
     return jsonify(address), 201
