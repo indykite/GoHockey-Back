@@ -97,7 +97,7 @@ def user_subscription_post(token_info, user_subscription_body=None):  # noqa: E5
     post_subscription_param = {
       "input": {
         "valid_from": str(valid_from),
-        "valid_to": user_subscription_body.valid_to,
+        "valid_to": str(user_subscription_body.valid_to),
         "externalId": str(subscription_id),
         "sku": user_subscription_body.sku,
         "child": {
