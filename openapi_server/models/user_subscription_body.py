@@ -15,34 +15,34 @@ class UserSubscriptionBody(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, _from=None, to=None, sku=None, child=None):  # noqa: E501
+    def __init__(self, valid_from=None, valid_to=None, sku=None, child=None):  # noqa: E501
         """UserSubscriptionBody - a model defined in OpenAPI
 
-        :param _from: The _from of this UserSubscriptionBody.  # noqa: E501
-        :type _from: datetime
-        :param to: The to of this UserSubscriptionBody.  # noqa: E501
-        :type to: datetime
+        :param valid_from: The valid_from of this UserSubscriptionBody.  # noqa: E501
+        :type valid_from: datetime
+        :param valid_to: The valid_to of this UserSubscriptionBody.  # noqa: E501
+        :type valid_to: datetime
         :param sku: The sku of this UserSubscriptionBody.  # noqa: E501
         :type sku: List[str]
         :param child: The child of this UserSubscriptionBody.  # noqa: E501
         :type child: str
         """
         self.openapi_types = {
-            '_from': datetime,
-            'to': datetime,
+            'valid_from': datetime,
+            'valid_to': datetime,
             'sku': List[str],
             'child': str
         }
 
         self.attribute_map = {
-            '_from': 'from',
-            'to': 'to',
+            'valid_from': 'valid_from',
+            'valid_to': 'valid_to',
             'sku': 'sku',
             'child': 'child'
         }
 
-        self.__from = _from
-        self._to = to
+        self._valid_from = valid_from
+        self._valid_to = valid_to
         self._sku = sku
         self._child = child
 
@@ -58,46 +58,46 @@ class UserSubscriptionBody(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def _from(self):
-        """Gets the _from of this UserSubscriptionBody.
+    def valid_from(self):
+        """Gets the valid_from of this UserSubscriptionBody.
 
 
-        :return: The _from of this UserSubscriptionBody.
+        :return: The valid_from of this UserSubscriptionBody.
         :rtype: datetime
         """
-        return self.__from
+        return self._valid_from
 
-    @_from.setter
-    def _from(self, _from):
-        """Sets the _from of this UserSubscriptionBody.
+    @valid_from.setter
+    def valid_from(self, valid_from):
+        """Sets the valid_from of this UserSubscriptionBody.
 
 
-        :param _from: The _from of this UserSubscriptionBody.
-        :type _from: datetime
+        :param valid_from: The valid_from of this UserSubscriptionBody.
+        :type valid_from: datetime
         """
 
-        self.__from = _from
+        self._valid_from = valid_from
 
     @property
-    def to(self):
-        """Gets the to of this UserSubscriptionBody.
+    def valid_to(self):
+        """Gets the valid_to of this UserSubscriptionBody.
 
 
-        :return: The to of this UserSubscriptionBody.
+        :return: The valid_to of this UserSubscriptionBody.
         :rtype: datetime
         """
-        return self._to
+        return self._valid_to
 
-    @to.setter
-    def to(self, to):
-        """Sets the to of this UserSubscriptionBody.
+    @valid_to.setter
+    def valid_to(self, valid_to):
+        """Sets the valid_to of this UserSubscriptionBody.
 
 
-        :param to: The to of this UserSubscriptionBody.
-        :type to: datetime
+        :param valid_to: The valid_to of this UserSubscriptionBody.
+        :type valid_to: datetime
         """
 
-        self._to = to
+        self._valid_to = valid_to
 
     @property
     def sku(self):
