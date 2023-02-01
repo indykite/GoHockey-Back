@@ -278,15 +278,6 @@ paths:
         schema:
           type: string
         style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: Subscriptions end date
-              example: 2020-12-31
-              format: date
-              title: to
-              type: object
       responses:
         "200":
           description: Subscriptions end date set
