@@ -120,6 +120,35 @@ paths:
       summary: Get the child by id
       x-openapi-router-controller: openapi_server.controllers.child_controller
       x-accepts: application/json
+    patch:
+      operationId: user_child_child_id_patch
+      parameters:
+      - description: Id of the child to update
+        explode: false
+        in: path
+        name: child_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_child_patch_body'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_child_patch_body'
+          description: Successfully updated child
+      security:
+      - bearerAuth: []
+      summary: Update the child by id
+      x-openapi-router-controller: openapi_server.controllers.child_controller
+      x-contentType: application/json
+      x-accepts: application/json
   /user/children:
     get:
       operationId: user_children_get
@@ -513,6 +542,23 @@ components:
           example: "52"
           type: string
       title: user_child_body
+      type: object
+    user_child_patch_body:
+      example:
+        shoe_size: 36
+        cloth_size: 122
+        helmet_size: 52
+      properties:
+        cloth_size:
+          example: "122"
+          type: string
+        shoe_size:
+          example: "36"
+          type: string
+        helmet_size:
+          example: "52"
+          type: string
+      title: user_child_patch_body
       type: object
     user_subscription_body:
       properties:

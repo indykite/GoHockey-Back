@@ -13,7 +13,6 @@ get_parent_query = gql(
     """
     query Parents($where: ParentWhere) {
       parents(where: $where) {
-          email
           externalId
           givenname
           kind
