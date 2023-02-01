@@ -19,7 +19,6 @@ patch_child_mutation = gql(
     mutation UpdateChildren($where: ChildWhere, $update: ChildUpdateInput) {
       updateChildren(where: $where, update: $update) {
         children {
-          externalId
           helmet_size
           shoe_size
           cloth_size

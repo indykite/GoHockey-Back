@@ -58,6 +58,14 @@ def user_child_child_id_get(token_info, child_id):  # noqa: E501
 
 def user_child_child_id_patch(token_info, child_id):  # noqa: E501
     """Update the child by id
+
+     # noqa: E501
+
+    :param token_info:
+    :param child_id: Id of the child to update
+    :type child_id: str
+
+    :rtype: None
     """
     if connexion.request.is_json:
         body = UserChildPatchBody.from_dict(connexion.request.get_json())  # noqa: E501
@@ -75,6 +83,8 @@ def user_child_child_id_patch(token_info, child_id):  # noqa: E501
         }
     }
     child = g.indykite_graph_client.execute(patch_child_mutation, params)
+    if not child['updateChildren']['children']:
+        return abort(404, description="Resource Child not found")
     return child
 
 
@@ -82,9 +92,6 @@ def user_child_post(token_info):  # noqa: E501
     """Add a child to the logged in user
 
      # noqa: E501
-
-    :param user_child_body:
-    :type user_child_body: dict | bytes
 
     :rtype: None
     """
