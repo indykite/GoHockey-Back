@@ -1,4 +1,5 @@
 import datetime
+from datetime import date
 import uuid
 
 import connexion
@@ -122,14 +123,12 @@ def user_subscription_patch(token_info, subscription_id):  # noqa: E501
     digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
     if digital_twin is None:
         return abort(404, description="Resource not found")
-    if connexion.request.is_json:
-        data = UserSubscriptionBody.from_dict(connexion.request.get_json())
     patch_subscription_params = {
         "where": {
             "externalId": subscription_id
         },
         "update": {
-            "valid_to": str(data.valid_to)
+            "valid_to": date.today()
         }
     }
     child = g.indykite_graph_client.execute(patch_subscription_mutation, patch_subscription_params)
