@@ -134,9 +134,9 @@ def user_subscription_patch(token_info, subscription_id):  # noqa: E501
     res = ac.is_authorized_token(
         token_info['indykite_token'],
         [resource],
-        ["patch_subscription"]
+        ["manage_subscription"]
     )
-    allowed = res.decisions[subscription_id].allow_action["patch_subscription"]
+    allowed = res.decisions[subscription_id].allow_action["manage_subscription"]
     if not allowed:
         return abort(404, description="Not found")
     patch_subscription_params = {
