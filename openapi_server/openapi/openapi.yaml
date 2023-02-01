@@ -51,15 +51,6 @@ paths:
   /user/address:
     get:
       operationId: user_address_get
-      parameters:
-      - description: Id of the address to get
-        explode: false
-        in: query
-        name: address_id
-        required: true
-        schema:
-          type: string
-        style: form
       responses:
         "200":
           content:

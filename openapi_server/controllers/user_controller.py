@@ -1,6 +1,7 @@
 from flask import abort, g
 
 from openapi_server.graphql_queries.add_parent import add_parent_mutation
+from openapi_server.graphql_queries.get_parent import get_parent_query
 
 
 def user_post(token_info):  # noqa: E501
@@ -15,6 +16,14 @@ def user_post(token_info):  # noqa: E501
                                                                ["email", "givenname", "familyname"])
     if digital_twin is None:
         return abort(404, description="Resource not found")
+    get_parent_params = {
+        "where": {
+            "externalId": digital_twin['digitalTwin'].id
+        }
+    }
+    parent = g.indykite_graph_client.execute(get_parent_query, get_parent_params)
+    if parent['parents']:
+        return abort(409, description="Resource already exists")
     add_parent_params = {
         "input": {
             "externalId": digital_twin['digitalTwin'].id,

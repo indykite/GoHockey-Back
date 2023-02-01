@@ -3,19 +3,24 @@ from gql import gql
 """
 {
   "where": {
-    "externalId":"c42c7722-45b2-4787-8fba-69627b088980"
+    "receivers_SOME": {
+      "externalId": "gid:AAAAFWqRpJo0E0iji-w7f57gDYU"
+    }
   }
 }
 """
-get_address_query= gql(
-  """query Address($where: AddressWhere) {
-    addresses(where: $where) {
-      zip
-      city
-      street
-      state
-      country
-      externalId
+
+get_address_query = gql(
+    """
+    query Addresses($where: AddressWhere) {
+      addresses(where: $where) {
+        city
+        country
+        externalId
+        state
+        street
+        zip
+      }
     }
-  }"""
+    """
 )
