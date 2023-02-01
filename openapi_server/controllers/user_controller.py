@@ -1,7 +1,7 @@
 from flask import abort, g
 
 from openapi_server.graphql_queries.add_parent import add_parent_mutation
-from openapi_server.graphql_queries.get_parent import get_parent_query
+from openapi_server.graphql_queries.get_parent import get_parent_query, get_parent_from_address_query
 
 
 def user_post(token_info):  # noqa: E501
@@ -76,13 +76,18 @@ def user_parents_get(token_info):  # noqa: E501
 
      # noqa: E501
     """
-    return [
-        {
-            "name": "John Doe",
-            "email": "john.doe@indykite.com"
-        },
-        {
-            "name": "Jane Doe",
-            "email": "jane.doe@indykite.com"
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'],
+                                                               ["email", "givenname", "familyname"])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+    get_parent_params = {
+        "where": {
+            "address": {
+                "receivers_SOME": {
+                    "externalId": digital_twin['digitalTwin'].id
+                }
+            }
         }
-    ]
+    }
+    parents = g.indykite_graph_client.execute(get_parent_from_address_query, get_parent_params)
+    return parents
