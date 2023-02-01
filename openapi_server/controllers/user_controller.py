@@ -28,7 +28,6 @@ def user_post(token_info):  # noqa: E501
         "input": {
             "externalId": digital_twin['digitalTwin'].id,
             "tenantId": digital_twin['tokenInfo'].subject.tenantId,
-            "email": digital_twin['digitalTwin'].properties[0].value,
             "givenname": digital_twin['digitalTwin'].properties[1].value,
             "lastname": digital_twin['digitalTwin'].properties[2].value,
             "kind": "PERSON",
