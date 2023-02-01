@@ -71,3 +71,4 @@ target/
 #IDE
 .idea/
 /staging_app_agent_credential.json
+.vscode/
