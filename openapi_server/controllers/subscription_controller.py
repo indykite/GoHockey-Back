@@ -39,7 +39,7 @@ def user_subscriptions_get(token_info):  # noqa: E501
       get_subscription_param = {
             "where": {
               "child": {
-                "externalId": str(child)
+                "externalId": child
               }
             }
           }
@@ -51,7 +51,7 @@ def user_child_subscriptions_get(child_id):
   get_subscription_param = {
     "where": {
       "child": {
-        "externalId": str(child_id)
+        "externalId": child_id
       }
     }
   }
