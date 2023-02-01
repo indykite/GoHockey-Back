@@ -20,6 +20,7 @@ get_children_query = gql(
                 helmet_size
                 shoe_size
                 year_of_birth
+                externalId
                 registered_by {
                     givenname
                     lastname
