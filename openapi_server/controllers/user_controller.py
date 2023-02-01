@@ -52,8 +52,8 @@ def user_get(token_info):  # noqa: E501
     if dt is None:
         return abort(404, description="Resource not found")
     return {
-        "name": dt['digitalTwin'].properties[0].value,
-        "email": dt['digitalTwin'].properties[1].value + " " + dt['digitalTwin'].properties[2].value,
+        "name": dt['digitalTwin'].properties[1].value + " " + dt['digitalTwin'].properties[2].value,
+        "email": dt['digitalTwin'].properties[0].value,
     }
 
 
