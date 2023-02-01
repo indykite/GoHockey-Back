@@ -18,6 +18,7 @@ get_subscription_query = gql(
         sku
         child {
           externalId
+          given_name
         }
         parent {
           externalId
