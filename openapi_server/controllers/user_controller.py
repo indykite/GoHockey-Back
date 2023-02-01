@@ -2,6 +2,7 @@ from flask import abort, g
 
 from openapi_server.graphql_queries.add_parent import add_parent_mutation
 from openapi_server.graphql_queries.get_parent import get_parent_query, get_parent_from_address_query
+from openapi_server.graphql_queries.patch_parent import patch_parent_mutation
 
 
 def user_post(token_info):  # noqa: E501
@@ -24,11 +25,26 @@ def user_post(token_info):  # noqa: E501
     parent = g.indykite_graph_client.execute(get_parent_query, get_parent_params)
     if parent['parents']:
         return abort(409, description="Resource already exists")
+
+    patch_parent_params = {
+        "lookUpByInput": {
+            "tenantId": digital_twin['tokenInfo'].subject.tenantId,
+            "type": "email",
+            "value": digital_twin['digitalTwin'].properties[0].value
+        },
+        "propertyPatchInputs": [{
+            "assuranceLevel": "LOW",
+            "issuer": "app:3mHBgoGNS0-lW9sfO6M3_Q",
+            "operation": "ADD",
+            "property": "extid",
+            "value": digital_twin['digitalTwin'].id
+        }]
+    }
+    g.indykite_graph_client.execute(patch_parent_mutation, patch_parent_params)
     add_parent_params = {
         "input": {
             "externalId": digital_twin['digitalTwin'].id,
             "tenantId": digital_twin['tokenInfo'].subject.tenantId,
-            "email": digital_twin['digitalTwin'].properties[0].value,
             "givenname": digital_twin['digitalTwin'].properties[1].value,
             "lastname": digital_twin['digitalTwin'].properties[2].value,
             "kind": "PERSON",
