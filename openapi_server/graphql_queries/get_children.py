@@ -1,4 +1,5 @@
 from gql import gql
+
 """
 Given a parents digitalTwinId, get all their children
 {
@@ -10,21 +11,20 @@ Given a parents digitalTwinId, get all their children
 }
 """
 get_children_query = gql(
-  """query Children($where: ChildWhere) {
-    children(where: $where) {
-      cloth_size
-      helmet_size
-      shoe_size
-      year_of_birth
-      given_name
-      gender
-      externalId
-      parents {
-        email
-        givenname
-        lastname
-        externalId
-      }
-    }
-  }"""
+    """
+        query Children($where: ChildWhere) {
+            children(where: $where) {
+                cloth_size
+                gender
+                given_name
+                helmet_size
+                shoe_size
+                year_of_birth
+                registered_by {
+                    givenname
+                    lastname
+                }
+            }
+        }
+    """
 )
