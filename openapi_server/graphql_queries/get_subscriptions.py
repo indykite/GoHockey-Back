@@ -5,24 +5,32 @@ Finding subscriptions based on childs externalId
 {
   "where": {
     "child": {
-      "externalId": "c42c7722-45b2-4787-8fba-69627b088980"
+      "parents_SOME": {
+        "externalId": null
+      }
     }
   }
 }
 """
+
 get_subscriptions_query = gql(
-    """query HockeySubscription($where: HockeySubscriptionWhere) {
+    """
+    query HockeySubscriptions($where: HockeySubscriptionWhere) {
       hockeySubscriptions(where: $where) {
-        valid_from
         valid_to
-        externalId
+        valid_from
         sku
         child {
+          given_name
           externalId
         }
+        externalId
         parent {
+          givenname
+          lastname
           externalId
         }
       }
-    }"""
+    }
+    """
 )
