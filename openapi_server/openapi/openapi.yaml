@@ -172,7 +172,7 @@ paths:
             schema:
               $ref: '#/components/schemas/invitation_create_body'
       responses:
-        "200":
+        "201":
           description: Successfully sent out the invitation
       security:
       - bearerAuth: []
@@ -199,8 +199,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/invitation_information_body'
           description: Invitation information
-      security:
-      - bearerAuth: []
       summary: Get the invitation information with the given ID
       x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-accepts: application/json
@@ -239,20 +237,6 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.user_controller
       x-accepts: application/json
   /user/subscription:
-    get:
-      operationId: user_subscription_get
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_1'
-          description: Subscription of the logged in user
-      security:
-      - bearerAuth: []
-      summary: Get the subscription of the logged in user
-      x-openapi-router-controller: openapi_server.controllers.subscription_controller
-      x-accepts: application/json
     post:
       operationId: user_subscription_post
       requestBody:
@@ -269,9 +253,69 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.subscription_controller
       x-contentType: application/json
       x-accepts: application/json
+  /user/subscription/{subscription_id}:
+    get:
+      operationId: user_subscription_get
+      parameters:
+      - description: Id of the subscription
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+          description: Subscription of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the subscription of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
+    patch:
+      operationId: user_subscription_patch
+      parameters:
+      - description: Id of the subscription
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Subscriptions end date
+              example: 2020-12-31
+              format: date
+              title: to
+              type: object
+      responses:
+        "200":
+          description: Subscriptions end date set
+      security:
+      - bearerAuth: []
+      summary: Set the subscription end date
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
+      x-accepts: application/json
   /user/subscriptions:
     get:
       operationId: user_subscriptions_get
+      parameters:
+      - description: external ID of the child to get all of their subscriptions
+        explode: true
+        in: query
+        name: child_id
+        required: true
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -438,30 +482,30 @@ components:
           example: John
           type: string
         year_of_birth:
-          example: 2010
+          example: "2010"
           type: string
         gender:
           example: male
           type: string
         cloth_size:
-          example: 122
+          example: "122"
           type: string
         shoe_size:
-          example: 36
+          example: "36"
           type: string
         helmet_size:
-          example: 52
+          example: "52"
           type: string
       title: user_child_body
       type: object
     user_subscription_body:
       properties:
-        from:
+        valid_from:
           example: 2022-01-01T00:00:00Z
           format: date-time
           title: from
           type: string
-        to:
+        valid_to:
           example: 2022-12-31T23:59:59Z
           format: date-time
           title: to
