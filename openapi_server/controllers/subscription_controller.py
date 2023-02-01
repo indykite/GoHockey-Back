@@ -68,7 +68,7 @@ def user_subscription_get(subscription_id):  # noqa: E501
     """
     get_subscription_param = {
           "where": {
-            "externalId": str(subscription_id)
+            "externalId": subscription_id
           }
         }
     subscription = g.indykite_graph_client.execute(get_subscription_query, get_subscription_param)
