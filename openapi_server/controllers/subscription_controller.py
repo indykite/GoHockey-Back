@@ -128,8 +128,8 @@ def user_subscription_patch(token_info, subscription_id):  # noqa: E501
             "externalId": subscription_id
         },
         "update": {
-            "valid_to": date.today()
+            "valid_to": str(date.today())
         }
     }
-    child = g.indykite_graph_client.execute(patch_subscription_mutation, patch_subscription_params)
-    return child
+    subscription = g.indykite_graph_client.execute(patch_subscription_mutation, patch_subscription_params)
+    return subscription
