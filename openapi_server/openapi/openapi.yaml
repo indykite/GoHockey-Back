@@ -298,15 +298,32 @@ paths:
   /user/subscriptions:
     get:
       operationId: user_subscriptions_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+                type: array
+          description: Subscriptions of the logged in user
+      security:
+      - bearerAuth: []
+      summary: Get the subscriptions of the logged in user
+      x-openapi-router-controller: openapi_server.controllers.subscription_controller
+      x-accepts: application/json
+  /user/{child_id}/subscriptions:
+    get:
+      operationId: user_child_subscriptions_get
       parameters:
-      - description: external ID of the child to get all of their subscriptions
-        explode: true
-        in: query
+      - description: Id of the child to get
+        explode: false
+        in: path
         name: child_id
         required: true
         schema:
           type: string
-        style: form
+        style: simple
       responses:
         "200":
           content:

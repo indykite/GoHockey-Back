@@ -7,25 +7,56 @@ from openapi_server.models.inline_response2001 import InlineResponse2001  # noqa
 from openapi_server.models.user_subscription_body import UserSubscriptionBody  # noqa: E501
 from openapi_server.graphql_queries.get_subscription import get_subscription_query
 from openapi_server.graphql_queries.add_subscription import add_subscription_mutation
+from openapi_server.controllers.child_controller import get_children_query
 from flask import abort, g, jsonify
 
 
-def user_subscriptions_get(child_id):  # noqa: E501
+def user_subscriptions_get(token_info):  # noqa: E501
     """Get the subscriptions of the logged in user
 
      # noqa: E501
 
     :rtype: None
     """
-    get_subscription_param = {
-          "where": {
-            "child": {
-              "externalId": str(child_id)
+    children = []
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
+    if digital_twin is None:
+      return abort(404, description="Resource not found")
+    get_children_params = {
+      "where": {
+        "parents_SOME": {
+          "externalId": digital_twin['digitalTwin'].id
+        },
+      }
+    }
+    get_children = g.indykite_graph_client.execute(get_children_query, get_children_params)
+    if get_children:
+      for child in get_children.get("children"):
+        children.append(child.get("externalId"))
+
+    subscriptions = []
+    for child in children:
+      get_subscription_param = {
+            "where": {
+              "child": {
+                "externalId": child
+              }
             }
           }
-        }
-    subscription = g.indykite_graph_client.execute(get_subscription_query, get_subscription_param)
-    return subscription
+      subscriptions.append(g.indykite_graph_client.execute(get_subscription_query, get_subscription_param))
+    return subscriptions
+
+
+def user_child_subscriptions_get(child_id):
+  get_subscription_param = {
+    "where": {
+      "child": {
+        "externalId": child_id
+      }
+    }
+  }
+  subscriptions = g.indykite_graph_client.execute(get_subscription_query, get_subscription_param)
+  return subscriptions
 
 
 def user_subscription_get(subscription_id):  # noqa: E501
@@ -37,7 +68,7 @@ def user_subscription_get(subscription_id):  # noqa: E501
     """
     get_subscription_param = {
           "where": {
-            "externalId": str(subscription_id)
+            "externalId": subscription_id
           }
         }
     subscription = g.indykite_graph_client.execute(get_subscription_query, get_subscription_param)
