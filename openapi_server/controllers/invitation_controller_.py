@@ -134,21 +134,22 @@ def invitation_accept(token_info):
     added_connection = []
     for child_id in children_ids:
         create_connection_body = {
-            "connect": {
-            "parent_of": [
-              {
-                "where": {
-                  "node": {
-                    "externalId": child_id
+              "where": {
+                "externalId": str(digital_twin)
+              },
+              "connect": {
+                "parent_of": [
+                  {
+                    "connect":  None,
+                    "where": {
+                      "node": {
+                        "externalId": child_id
+                      }
+                    }
                   }
-                }
+                ]
               }
-            ]
-            },
-            "where": {
-            "externalId": str(digital_twin)
             }
-        }
         response = g.indykite_graph_client.execute(accept_invitation_mutation, create_connection_body)
         added_connection.append(response)
 

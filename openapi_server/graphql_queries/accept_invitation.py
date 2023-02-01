@@ -2,19 +2,20 @@ from gql import gql
 
 """
 {
+  "where": {
+    "externalId": parent_id
+  },
   "connect": {
     "parent_of": [
       {
+        "connect": null,
         "where": {
           "node": {
-            "externalId": null
+            "externalId": child_id
           }
         }
       }
     ]
-  },
-  "where": {
-    "externalId": null
   }
 }
 """
@@ -22,12 +23,10 @@ from gql import gql
 
 accept_invitation_mutation = gql(
   """mutation UpdateParents($where: ParentWhere, $connect: ParentConnectInput) {
-        updateParents(where: $where, connect: $connect) {
-            parents {
-                parent_of {
-                    externalId
-                }
-            }
+      updateParents(where: $where, connect: $connect) {
+        parents {
+          externalId
         }
+      }
     }"""
 )
