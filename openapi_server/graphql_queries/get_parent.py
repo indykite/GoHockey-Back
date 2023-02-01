@@ -45,7 +45,6 @@ get_parent_from_address_query = gql(
       parents(where: $where) {
         givenname
         lastname
-        email
       }
     }
     """
