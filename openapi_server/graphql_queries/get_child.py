@@ -24,7 +24,6 @@ get_child_query = gql(
       gender
       externalId
       parents {
-        email
         givenname
         lastname
         externalId
