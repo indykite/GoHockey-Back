@@ -171,6 +171,23 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.invitation_controller_
       x-contentType: application/json
       x-accepts: application/json
+  /user/invitation/accept:
+    post:
+      operationId: invitation_accept
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/invitation_accept_request'
+      responses:
+        "201":
+          description: "Accepted invitation, connection was created"
+      security:
+      - bearerAuth: []
+      summary: Accepts the invitation and connects the parent to the inviter parent
+      x-openapi-router-controller: openapi_server.controllers.invitation_controller_
+      x-contentType: application/json
+      x-accepts: application/json
   /user/invitation/{invitation_id}:
     get:
       operationId: invitation_get
@@ -528,6 +545,13 @@ components:
       - type: integer
       - type: number
       title: invitation_information_body_message_attributes_inner
+    invitation_accept_request:
+      example:
+        token: XXXXXXXXXXXXXXXXXXXX
+      properties:
+        token:
+          type: string
+      title: invitation_accept_request
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

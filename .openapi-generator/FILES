@@ -6,6 +6,7 @@ openapi_server/models/__init__.py
 openapi_server/models/base_model_.py
 openapi_server/models/inline_response200.py
 openapi_server/models/inline_response2001.py
+openapi_server/models/invitation_accept_request.py
 openapi_server/models/invitation_create_body.py
 openapi_server/models/invitation_information_body.py
 openapi_server/models/invitation_information_body_message_attributes_inner.py

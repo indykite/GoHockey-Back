@@ -11,6 +11,12 @@ from retrying import retry, RetryError
 import openapi_server.controllers.security_controller_ as sec
 from openapi_server.helper import format_helper, response_processor, patch_calls as patch
 from openapi_server.models import InvitationCreateBody
+from openapi_server.models import InvitationAcceptRequest
+from openapi_server.helper.invitation_calls import check_invitation_state
+from openapi_server.graphql_queries.get_address import get_address_query
+from openapi_server.graphql_queries.add_address import add_address_mutation
+from openapi_server.graphql_queries.get_children import get_children_query
+from openapi_server.graphql_queries.accept_invitation import accept_invitation_mutation
 
 from flask import g, jsonify, abort
 
@@ -81,14 +87,124 @@ def invitations_get(token_info):
     else:
         try:
             ids = response_processor.get_all_reference_id_from_get_digital_twin_response(info)
-        except Exception as e:
+        except Exception:
             pass
 
         for i in ids:
             try:
                 r = invitation_get(i)
                 invitation_information.append(r[0])
-            except Exception as e:
+            except Exception:
                 pass
 
-    return jsonify(invitation_information), 200
+    return jsonify(invitation_information)
+
+
+def invitation_accept(token_info):
+    if connexion.request.is_json:
+        invitation_accept_body = InvitationAcceptRequest.from_dict(connexion.request.get_json())  # noqa: E501
+
+    accepted = check_invitation_state(invitation_accept_body.token)
+    if not accepted:
+        return abort(422, "Failed to check the state of the invitation")
+
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
+
+    response = format_helper.decode_response(accepted)
+
+    # invitation_reference_id = response.get("invitation").get("referenceId")   # maybe we need this later
+    inviter_id = response.get("invitation").get("messageAttributes").get("fields").get("inviter_id").get("stringValue")
+    invitation_state = response.get("invitation").get("state")
+
+    if invitation_state != "INVITATION_STATE_ACCEPTED":
+        return abort(422, description="Invitation is in wrong state")
+
+    address = get_address_from_inviter(inviter_id)
+    if not address:
+        return abort(422, description="KB error, failed to get the address of the inviter")
+
+    new_address = set_address(address, digital_twin)
+    if not new_address:
+        return abort(422, description="Failed to add the address to the user")
+
+    children_ids = get_all_children(inviter_id)
+
+    added_connection = []
+    for child_id in children_ids:
+        create_connection_body = {
+            "connect": {
+            "parent_of": [
+              {
+                "where": {
+                  "node": {
+                    "externalId": child_id
+                  }
+                }
+              }
+            ]
+            },
+            "where": {
+            "externalId": str(digital_twin)
+            }
+        }
+        response = g.indykite_graph_client.execute(accept_invitation_mutation, create_connection_body)
+        added_connection.append(response)
+
+    return True, 201
+
+
+def get_address_from_inviter(inviter_id):
+    get_address_params = {
+        "where": {
+            "receivers_SOME": {
+                "externalId": inviter_id
+            }
+        }
+    }
+    response = g.indykite_graph_client.execute(get_address_query, get_address_params)
+    if not response:
+        return None
+    return response
+
+
+def set_address(address, digital_twin):
+    address_id = uuid.uuid4()
+    post_address_params = {
+        "input": {
+            "zip": address["addresses"][0]["zip"],
+            "city": address["addresses"][0]["city"],
+            "street": address["addresses"][0]["street"],
+            "country": address["addresses"][0]["country"],
+            "externalId": str(address_id),
+            "receivers": {
+                "connect": {
+                    "where": {
+                        "node": {
+                            "externalId": str(digital_twin)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    address = g.indykite_graph_client.execute(add_address_mutation, post_address_params)
+    if not address:
+        return abort(422, description="KB error, failed to create the address")
+    return jsonify(address)
+
+
+def get_all_children(inviter_id):
+    get_children_params = {
+        "where": {
+            "parents_SOME": {
+                "externalId": inviter_id
+            },
+        }
+    }
+    children = g.indykite_graph_client.execute(get_children_query, get_children_params)
+    children_ids = []
+    for i in children.get("children"):
+        children_ids.append(i.get("externalId"))
+    return children_ids
