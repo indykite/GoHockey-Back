@@ -12,6 +12,7 @@ openapi_server/models/invitation_information_body_message_attributes_inner.py
 openapi_server/models/user_address_body.py
 openapi_server/models/user_body.py
 openapi_server/models/user_child_body.py
+openapi_server/models/user_child_patch_body.py
 openapi_server/models/user_subscription_body.py
 openapi_server/openapi/openapi.yaml
 openapi_server/test/__init__.py
