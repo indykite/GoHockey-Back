@@ -24,7 +24,7 @@ type Parent implements DigitalTwin {
     registered: [Child!]! @relationship(type: "REGISTERED", direction: OUT)
     address: Address @relationship(type: "RECEIVES_AT", direction: OUT)
     email: String!
-    givenname: String!
+    givenname: IdentityProperty @identityProperty
     lastname: String!
     externalId: String!
     digitalTwinId: String!

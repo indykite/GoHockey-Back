@@ -8,14 +8,20 @@ from gql import gql
   "connect": {
     "parent_of": [
       {
-        "connect": null,
         "where": {
           "node": {
             "externalId": child_id
           }
         }
       }
-    ]
+    ],
+    "address": {
+      "where": {
+        "node": {
+          "externalId": address_id
+        }
+      }
+    }
   }
 }
 """

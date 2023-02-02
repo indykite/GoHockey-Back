@@ -1,9 +1,6 @@
-import connexion
 import uuid
-from retrying import retry, RetryError
 
 import connexion
-from flask import g, jsonify, abort
 from indykite_sdk.indykite.identity.v1beta2 import identity_management_api_pb2 as pb2
 from indykite_sdk.indykite.objects.v1beta1 import struct_pb2 as objects
 from retrying import retry, RetryError
@@ -14,7 +11,6 @@ from openapi_server.models import InvitationCreateBody
 from openapi_server.models import InvitationAcceptRequest
 from openapi_server.helper.invitation_calls import check_invitation_state
 from openapi_server.graphql_queries.get_address import get_address_query
-from openapi_server.graphql_queries.add_address import add_address_mutation
 from openapi_server.graphql_queries.get_children import get_children_query
 from openapi_server.graphql_queries.accept_invitation import accept_invitation_mutation
 
@@ -125,29 +121,31 @@ def invitation_accept(token_info):
     if not address:
         return abort(422, description="KB error, failed to get the address of the inviter")
 
-    new_address = set_address(address, digital_twin)
-    if not new_address:
-        return abort(422, description="Failed to add the address to the user")
-
     children_ids = get_all_children(inviter_id)
 
     added_connection = []
     for child_id in children_ids:
         create_connection_body = {
               "where": {
-                "externalId": str(digital_twin)
+                "externalId": str(digital_twin['digitalTwin'].id)
               },
               "connect": {
                 "parent_of": [
                   {
-                    "connect":  None,
                     "where": {
                       "node": {
                         "externalId": child_id
                       }
                     }
                   }
-                ]
+                ],
+                "address": {
+                    "where": {
+                        "node": {
+                            "externalId": address["addresses"][0]["externalId"]
+                        }
+                    }
+                }
               }
             }
         response = g.indykite_graph_client.execute(accept_invitation_mutation, create_connection_body)
@@ -168,32 +166,6 @@ def get_address_from_inviter(inviter_id):
     if not response:
         return None
     return response
-
-
-def set_address(address, digital_twin):
-    address_id = uuid.uuid4()
-    post_address_params = {
-        "input": {
-            "zip": address["addresses"][0]["zip"],
-            "city": address["addresses"][0]["city"],
-            "street": address["addresses"][0]["street"],
-            "country": address["addresses"][0]["country"],
-            "externalId": str(address_id),
-            "receivers": {
-                "connect": {
-                    "where": {
-                        "node": {
-                            "externalId": str(digital_twin)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    address = g.indykite_graph_client.execute(add_address_mutation, post_address_params)
-    if not address:
-        return abort(422, description="KB error, failed to create the address")
-    return jsonify(address)
 
 
 def get_all_children(inviter_id):
