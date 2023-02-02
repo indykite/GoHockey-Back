@@ -129,6 +129,9 @@ def user_subscription_patch(token_info, subscription_id):  # noqa: E501
 
     :rtype: None
     """
+    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
+    if digital_twin is None:
+        return abort(404, description="Resource not found")
     ac = AuthorizationClient()
     resource = Resource("HockeySubscription", subscription_id)
     res = ac.is_authorized_token(
