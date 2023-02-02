@@ -1,9 +1,12 @@
 import datetime
 from datetime import date
 import uuid
+from flask import g, abort
+from indykite_sdk.authorization import AuthorizationClient
 
 import connexion
-from flask import abort, g, jsonify
+from flask import g, abort, jsonify
+from indykite_sdk.authorization import AuthorizationClient
 
 from openapi_server.graphql_queries.add_subscription import add_subscription_mutation
 from openapi_server.graphql_queries.get_subscription import get_subscription_query
@@ -109,6 +112,12 @@ def user_subscription_post(token_info, user_subscription_body=None):  # noqa: E5
     return jsonify(subscription)
 
 
+class Resource:
+    def __init__(self, label, element):
+        self.label = label
+        self.id = element
+
+
 def user_subscription_patch(token_info, subscription_id):  # noqa: E501
     """Update the subscription of the logged in user
 
@@ -120,9 +129,16 @@ def user_subscription_patch(token_info, subscription_id):  # noqa: E501
 
     :rtype: None
     """
-    digital_twin = g.indykite_client.get_digital_twin_by_token(token_info['indykite_token'], [])
-    if digital_twin is None:
-        return abort(404, description="Resource not found")
+    ac = AuthorizationClient()
+    resource = Resource("HockeySubscription", subscription_id)
+    res = ac.is_authorized_token(
+        token_info['indykite_token'],
+        [resource],
+        ["manage_subscription"]
+    )
+    allowed = res.decisions[subscription_id].allow_action["manage_subscription"]
+    if not allowed:
+        return abort(403, description="Forbidden")
     patch_subscription_params = {
         "where": {
             "externalId": subscription_id
