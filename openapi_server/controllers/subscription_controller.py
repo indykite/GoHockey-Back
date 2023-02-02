@@ -138,7 +138,7 @@ def user_subscription_patch(token_info, subscription_id):  # noqa: E501
     )
     allowed = res.decisions[subscription_id].allow_action["manage_subscription"]
     if not allowed:
-        return abort(404, description="Not found")
+        return abort(403, description="Forbidden")
     patch_subscription_params = {
         "where": {
             "externalId": subscription_id
